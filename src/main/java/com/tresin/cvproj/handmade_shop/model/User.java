@@ -16,6 +16,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private String email;
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
     @OneToMany(mappedBy = "user")
@@ -41,6 +42,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
