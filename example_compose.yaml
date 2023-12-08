@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=handmadeshop'
+      - 'POSTGRES_PASSWORD=$PASSWORD_HERE$'
+      - 'POSTGRES_USER=$USER_HERE$'
+    ports:
+      - '5432'
