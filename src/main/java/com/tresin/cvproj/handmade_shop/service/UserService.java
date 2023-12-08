@@ -1,6 +1,7 @@
 package com.tresin.cvproj.handmade_shop.service;
 
 import com.tresin.cvproj.handmade_shop.exception.UserNotFoundException;
+import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,9 @@ public class UserService {
     }
 
     public User createUser(User newUser) {
-        return userRepository.save(newUser);
+        User createdUser = userRepository.save(newUser);
+        logger.info("User with ID {} created successfully", createdUser.getId());
+        return createdUser;
     }
 
     public User updateUser(Long userId, User updatedUser) {

@@ -23,7 +23,9 @@ public class ProductService {
     }
 
     public Product createProduct(Product newProduct) {
-        return productRepository.save(newProduct);
+        Product createdProduct = productRepository.save(newProduct);
+        logger.info("Product with ID {} created successfully", createdProduct.getId());
+        return createdProduct;
     }
 
     public Product updateProduct(Long productId, Product updatedProduct) {
