@@ -1,9 +1,7 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
 import com.tresin.cvproj.handmade_shop.dto.ProductDTO;
-import com.tresin.cvproj.handmade_shop.dto.UserDTO;
 import com.tresin.cvproj.handmade_shop.model.Product;
-import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
