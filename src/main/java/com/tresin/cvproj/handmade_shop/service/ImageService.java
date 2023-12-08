@@ -60,7 +60,7 @@ public class ImageService {
         return imageRepository.findAll();
     }
 
-    public Optional<Image> getCartById(Long imageId) {
+    public Optional<Image> getImageById(Long imageId) {
         Optional<Image> imageOptional = imageRepository.findById(imageId);
         if (imageOptional.isPresent()) {
             logger.info("Image with ID {} found", imageId);
