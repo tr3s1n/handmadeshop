@@ -39,7 +39,7 @@ public class CartService {
 
             return savedCart;
         } else {
-            logger.warn("Cart with ID {} not found in method updateProduct", cartId);
+            logger.warn("Cart with ID {} not found in method updateCart", cartId);
             throw new CartNotFoundException("Cart with ID " + cartId + " not found");
         }
     }
@@ -50,8 +50,8 @@ public class CartService {
             cartRepository.deleteById(cartId);
             logger.info("Cart with ID {} deleted successfully", cartId);
         } else {
-            logger.warn("Cart with ID {} not found in method deleteProduct", cartId);
-            throw new CartNotFoundException("User with ID " + cartId + " not found");
+            logger.warn("Cart with ID {} not found in method deleteCart", cartId);
+            throw new CartNotFoundException("Cart with ID " + cartId + " not found");
         }
     }
 
