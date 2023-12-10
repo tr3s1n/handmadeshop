@@ -24,6 +24,10 @@ public class Order {
     @OneToOne(mappedBy = "order")
     private Payment payment;
 
+    // Constructors
+    public Order() {
+
+    }
 
     // Getters and setters
     public Long getId() {

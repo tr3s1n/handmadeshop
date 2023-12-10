@@ -19,6 +19,10 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<Product> products;
 
+    // Constructors
+    public Cart() {
+
+    }
 
     // Getters and Setters
     public Long getId() {

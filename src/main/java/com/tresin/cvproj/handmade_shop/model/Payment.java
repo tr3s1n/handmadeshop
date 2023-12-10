@@ -19,6 +19,10 @@ public class Payment {
     private double amount;
     private Date paymentDate;
 
+    // Constructors
+    public Payment() {
+
+    }
 
     // Getters and Setters
     public Long getId() {

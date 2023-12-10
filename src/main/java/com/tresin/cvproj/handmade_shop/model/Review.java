@@ -18,6 +18,10 @@ public class Review {
     private int rating;
     private String comment;
 
+    // Constructors
+    public Review() {
+
+    }
 
     // Getters and Setters
     public Long getId() {

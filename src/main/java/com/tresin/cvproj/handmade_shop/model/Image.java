@@ -15,6 +15,10 @@ public class Image {
     private Product product;
     private String url;
 
+    // Constructors
+    public Image() {
+
+    }
 
     // Getters and Setters
     public Long getId() {
