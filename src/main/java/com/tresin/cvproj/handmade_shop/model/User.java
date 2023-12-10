@@ -24,6 +24,28 @@ public class User {
     private Cart cart;
 
 
+    // Constructors
+    public User() {
+
+    }
+
+    public User(String username, String password, String email, Address address) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.address = address;
+    }
+
+    public User(String username, String password, String email, List<Order> orders, List<Review> reviews, Address address, Cart cart) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.orders = orders;
+        this.reviews = reviews;
+        this.address = address;
+        this.cart = cart;
+    }
+
     // Getters and setters
     public Long getId() {
         return id;

@@ -18,6 +18,19 @@ public class Category {
     private List<Product> products;
 
 
+    // Constructors
+    public Category() {
+    }
+
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(String name, List<Product> products) {
+        this.name = name;
+        this.products = products;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;

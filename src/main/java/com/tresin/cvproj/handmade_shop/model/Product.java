@@ -36,6 +36,27 @@ public class Product {
     private List<Category> categories;
 
 
+    // Constructors
+    public Product() {
+
+    }
+
+	public Product(String name, double price, List<Category> categories) {
+        this.name = name;
+        this.price = price;
+        this.categories = categories;
+	}
+
+    public Product(String name, double price, Cart cart, List<Image> images, List<Order> orders, List<Review> reviews, List<Category> categories) {
+        this.name = name;
+        this.price = price;
+        this.cart = cart;
+        this.images = images;
+        this.orders = orders;
+        this.reviews = reviews;
+        this.categories = categories;
+    }
+
     // Getters and setters
     public Long getId() {
         return id;

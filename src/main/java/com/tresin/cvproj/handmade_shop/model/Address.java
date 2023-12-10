@@ -17,8 +17,19 @@ public class Address {
     private String city;
     private String zipCode;
 
+    // Constructors
+    public Address() {
 
-    // Getters and Setters
+    }
+
+	public Address(String street, String city, String zipCode) {
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
+	}
+
+
+	// Getters and Setters
     public Long getId() {
         return id;
     }
