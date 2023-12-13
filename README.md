@@ -15,6 +15,9 @@ This project is intended to showcase my skills as a Software Developer and also 
 
 ## Changelog
 
+- **13/12/2023**:
+Added dependencies for Unit testing, created first Test class for Product service using Mockito and JUnit.
+
 - **10/12/2023**:
 Updated README.md (Added this changelog :D), Added constructors to all the entities in the model package, added data package with DataSeeder classes for creating dummy testing data after application is started. Added Spring Security user and password in the example configuration files.
 
