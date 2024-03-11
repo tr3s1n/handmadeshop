@@ -3,20 +3,24 @@ package com.tresin.cvproj.handmade_shop.service;
 import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
 
 	@InjectMocks
@@ -27,7 +31,7 @@ public class ProductServiceTest {
 
 	@Test
 	public void testCreateProduct() {
-		Product product = new Product("Test", 420.69);
+		Product product = new Product("Test Product", 420.69);
 		when(productRepository.save(any(Product.class))).thenReturn(product);
 		Product createdProduct = productService.createProduct(product);
 
@@ -37,11 +41,11 @@ public class ProductServiceTest {
 	@Test
 	public void testDeleteProduct() {
 		long productIdToDelete = 1L;
-		Product productToDelete = new Product("Čoskoro vymazaný produkt", 1.99);
+		Product productToDelete = new Product("Test Product", 420.69);
 		when(productRepository.findById(productIdToDelete)).thenReturn(Optional.of(productToDelete));
 		productService.deleteProduct(productIdToDelete);
 
-		verify(productRepository, times(1)).delete(productToDelete);
+		verify(productRepository, times(1)).deleteById(productIdToDelete);
 	}
 
 	@Test
@@ -61,8 +65,8 @@ public class ProductServiceTest {
 	@Test
 	public void testGetAllProducts() {
 		List<Product> productList = Arrays.asList(
-				new Product("Testovací produkt 1", 19.99),
-				new Product("Test 2", 6.99)
+				new Product("Test Product 1", 19.99),
+				new Product("Test Product 2", 6.99)
 		);
 		when(productRepository.findAll()).thenReturn(productList);
 		List<Product> allProducts = productService.getAllProducts();
@@ -74,7 +78,7 @@ public class ProductServiceTest {
 	@Test
 	public void testGetProductById() {
 		long productIdToFind = 1L;
-		Product foundProduct = new Product("Test", 1.99);
+		Product foundProduct = new Product("Test Product", 1.99);
 		when(productRepository.findById(productIdToFind)).thenReturn(Optional.of(foundProduct));
 		Optional<Product> productById = productService.getProductById(productIdToFind);
 

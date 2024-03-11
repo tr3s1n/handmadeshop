@@ -6,4 +6,4 @@ services:
       - 'POSTGRES_PASSWORD=$DB_PASSWORD_HERE$'
       - 'POSTGRES_USER=$DB_USER_HERE$'
     ports:
-      - '5432'
+      - '5432:5432'
