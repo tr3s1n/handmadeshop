@@ -15,7 +15,7 @@ This project is intended to showcase my skills as a Software Developer and also 
 
 ## Changelog
 - **11/03/2024**:
-Added tests for all the remaining services.
+Added tests for all the remaining services, test for UserController and example_test.properties.
 
 - **13/12/2023**:
 Added dependencies for Unit testing, created first Test class for Product service using Mockito and JUnit.
@@ -65,9 +65,16 @@ Make sure you have the following installed:
    ```bash
    spring.datasource.username=$DB_USER_HERE$
    spring.datasource.password=$DB_PASSWORD_HERE$
-   spring.security.user.name=$SECUIRITY_USER_HERE$
+   spring.security.user.name=$SECURITY_USER_HERE$
    spring.security.user.password=$SECURITY_PASSWORD_HERE$
    ```
+
+4. For running tests without issues, create a copy of example_test.properties located in /src/test/resources and rename it to test.properties. Change all the placeholders:
+
+   ```bash
+   test.username=$SECURITY_USER_HERE$
+   test.password=$SECURITY_PASSWORD_HERE$
+   ```   
 
 5. create a copy of example_compose.yaml and rename it to compose.yaml. Update the placeholders. Use the same credentials that you used in application.properties. Update rows:
 
@@ -99,6 +106,7 @@ After that the Spring Boot application will start and you should be able to acce
 - PostgreSQL (latest docker image)
 - Hibernate
 - Spring Security
+- Mockito and JUnit5
 
 ## Contributing
 
