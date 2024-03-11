@@ -20,6 +20,15 @@ public class Image {
 
     }
 
+    public Image(String url) {
+        this.url = url;
+    }
+
+    public Image(Product product, String url) {
+        this.product = product;
+        this.url = url;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;

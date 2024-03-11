@@ -29,6 +29,17 @@ public class Order {
 
     }
 
+    public Order(User user, List<Product> products) {
+        this.user = user;
+        this.products = products;
+    }
+
+    public Order(User user, List<Product> products, Payment payment) {
+        this.user = user;
+        this.products = products;
+        this.payment = payment;
+    }
+
     // Getters and setters
     public Long getId() {
         return id;

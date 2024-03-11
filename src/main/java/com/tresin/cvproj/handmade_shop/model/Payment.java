@@ -24,6 +24,13 @@ public class Payment {
 
     }
 
+    public Payment(Order order, String paymentMethod, double amount, Date paymentDate) {
+        this.order = order;
+        this.paymentMethod = paymentMethod;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;

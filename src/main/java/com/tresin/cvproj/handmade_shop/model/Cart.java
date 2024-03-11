@@ -24,6 +24,11 @@ public class Cart {
 
     }
 
+    public Cart(User user, List<Product> products) {
+        this.user = user;
+        this.products = products;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;

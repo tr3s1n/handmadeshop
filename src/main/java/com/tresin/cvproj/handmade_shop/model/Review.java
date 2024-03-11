@@ -23,6 +23,13 @@ public class Review {
 
     }
 
+    public Review(User user, Product product, int rating, String comment) {
+        this.user = user;
+        this.product = product;
+        this.rating = rating;
+        this.comment = comment;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
