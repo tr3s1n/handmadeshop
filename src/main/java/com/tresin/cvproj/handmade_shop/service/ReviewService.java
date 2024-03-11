@@ -34,7 +34,7 @@ public class ReviewService {
             existingReview.setUser(updatedReview.getUser());
             existingReview.setProduct(updatedReview.getProduct());
             existingReview.setRating(updatedReview.getRating());
-            existingReview.setComment(existingReview.getComment());
+            existingReview.setComment(updatedReview.getComment());
 
             Review savedReview = reviewRepository.save(existingReview);
             logger.info("Review with ID {} updated successfully", reviewId);
