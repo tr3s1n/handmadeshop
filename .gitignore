@@ -36,3 +36,4 @@ out/
 .vscode/
 /compose.yaml
 /src/main/resources/application.properties
+/src/test/resources/test.properties
