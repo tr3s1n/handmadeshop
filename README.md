@@ -14,6 +14,8 @@ This project is intended to showcase my skills as a Software Developer and also 
 - [License](#license)
 
 ## Changelog
+- **11/03/2024**:
+Added tests for all the remaining services.
 
 - **13/12/2023**:
 Added dependencies for Unit testing, created first Test class for Product service using Mockito and JUnit.
