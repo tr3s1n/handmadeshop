@@ -14,6 +14,9 @@ This project is intended to showcase my skills as a Software Developer and also 
 - [License](#license)
 
 ## Changelog
+- **13/03/2024**:
+Added JWT Authentication & Authorization and basic setup of Spring Security 6. Added lombok and refactored model classes and data seeder classes.
+
 - **11/03/2024**:
 Added tests for all the remaining services, test for UserController and example_test.properties.
 
@@ -105,7 +108,7 @@ After that the Spring Boot application will start and you should be able to acce
 - Docker Desktop
 - PostgreSQL (latest docker image)
 - Hibernate
-- Spring Security
+- Spring Security 6
 - Mockito and JUnit5
 
 ## Contributing
