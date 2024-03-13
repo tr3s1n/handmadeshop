@@ -11,59 +11,57 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
-    private final OrderService orderService;
+	private final OrderService orderService;
 
-    @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+	@Autowired
+	public OrderController(OrderService orderService) {
+		this.orderService = orderService;
+	}
 
-    @PostMapping
-    public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
-        Order newOrder = new Order();
-        newOrder.setUser(orderDTO.getUser());
-        newOrder.setProducts(orderDTO.getProducts());
-        Order createdOrder = orderService.createOrder(newOrder);
+	@PostMapping
+	public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
+		Order newOrder = new Order();
+		newOrder.setUser(orderDTO.getUser());
+		newOrder.setProducts(orderDTO.getProducts());
+		Order createdOrder = orderService.createOrder(newOrder);
 
-        return ResponseEntity.ok(createdOrder);
-    }
+		return ResponseEntity.ok(createdOrder);
+	}
 
-    @PutMapping("/{orderId}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long orderId, @Valid @RequestBody OrderDTO orderDTO) {
-        Order updatedOrder = new Order();
-        updatedOrder.setUser(orderDTO.getUser());
-        updatedOrder.setProducts(orderDTO.getProducts());
-        Order resultOrder = orderService.updateOrder(orderId, updatedOrder);
+	@PutMapping("/{orderId}")
+	public ResponseEntity<Order> updateOrder(@PathVariable Long orderId, @Valid @RequestBody OrderDTO orderDTO) {
+		Order updatedOrder = new Order();
+		updatedOrder.setUser(orderDTO.getUser());
+		updatedOrder.setProducts(orderDTO.getProducts());
+		Order resultOrder = orderService.updateOrder(orderId, updatedOrder);
 
-        if (resultOrder != null) {
-            return ResponseEntity.ok(resultOrder);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+		if (resultOrder != null) {
+			return ResponseEntity.ok(resultOrder);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    @DeleteMapping("/{orderId}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
-        orderService.deleteOrder(orderId);
+	@DeleteMapping("/{orderId}")
+	public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
+		orderService.deleteOrder(orderId);
 
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.noContent().build();
+	}
 
-    @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
+	@GetMapping
+	public ResponseEntity<List<Order>> getAllOrders() {
+		List<Order> orders = orderService.getAllOrders();
 
-        return ResponseEntity.ok(orders);
-    }
+		return ResponseEntity.ok(orders);
+	}
 
-    @GetMapping("/{orderId}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long orderId) {
-        return orderService.getOrderById(orderId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{orderId}")
+	public ResponseEntity<Order> getOrderById(@PathVariable Long orderId) {
+		return orderService.getOrderById(orderId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
 }

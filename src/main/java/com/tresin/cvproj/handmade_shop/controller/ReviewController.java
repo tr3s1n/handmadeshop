@@ -11,63 +11,61 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/api/v1/reviews")
 public class ReviewController {
 
-    private final ReviewService reviewService;
+	private final ReviewService reviewService;
 
-    @Autowired
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
+	@Autowired
+	public ReviewController(ReviewService reviewService) {
+		this.reviewService = reviewService;
+	}
 
-    @PostMapping
-    public ResponseEntity<Review> createReview(@Valid @RequestBody ReviewDTO reviewDTO) {
-        Review newReview = new Review();
-        newReview.setUser(reviewDTO.getUser());
-        newReview.setProduct(reviewDTO.getProduct());
-        newReview.setRating(reviewDTO.getRating());
-        newReview.setComment(reviewDTO.getComment());
-        Review createdReview = reviewService.createReview(newReview);
+	@PostMapping
+	public ResponseEntity<Review> createReview(@Valid @RequestBody ReviewDTO reviewDTO) {
+		Review newReview = new Review();
+		newReview.setUser(reviewDTO.getUser());
+		newReview.setProduct(reviewDTO.getProduct());
+		newReview.setRating(reviewDTO.getRating());
+		newReview.setComment(reviewDTO.getComment());
+		Review createdReview = reviewService.createReview(newReview);
 
-        return ResponseEntity.ok(createdReview);
-    }
+		return ResponseEntity.ok(createdReview);
+	}
 
-    @PutMapping("/{reviewId}")
-    public ResponseEntity<Review> updateReview(@PathVariable Long reviewId, @Valid @RequestBody ReviewDTO reviewDTO) {
-        Review updatedReview = new Review();
-        updatedReview.setUser(reviewDTO.getUser());
-        updatedReview.setProduct(reviewDTO.getProduct());
-        updatedReview.setRating(reviewDTO.getRating());
-        updatedReview.setComment(reviewDTO.getComment());
-        Review resultReview = reviewService.updateReview(reviewId, updatedReview);
+	@PutMapping("/{reviewId}")
+	public ResponseEntity<Review> updateReview(@PathVariable Long reviewId, @Valid @RequestBody ReviewDTO reviewDTO) {
+		Review updatedReview = new Review();
+		updatedReview.setUser(reviewDTO.getUser());
+		updatedReview.setProduct(reviewDTO.getProduct());
+		updatedReview.setRating(reviewDTO.getRating());
+		updatedReview.setComment(reviewDTO.getComment());
+		Review resultReview = reviewService.updateReview(reviewId, updatedReview);
 
-        if (resultReview != null) {
-            return ResponseEntity.ok(resultReview);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+		if (resultReview != null) {
+			return ResponseEntity.ok(resultReview);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
-        reviewService.deleteReview(reviewId);
+	@DeleteMapping("/{reviewId}")
+	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
+		reviewService.deleteReview(reviewId);
 
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.noContent().build();
+	}
 
-    @GetMapping
-    public ResponseEntity<List<Review>> getAllReviews() {
-        List<Review> reviews = reviewService.getAllReviews();
+	@GetMapping
+	public ResponseEntity<List<Review>> getAllReviews() {
+		List<Review> reviews = reviewService.getAllReviews();
 
-        return ResponseEntity.ok(reviews);
-    }
+		return ResponseEntity.ok(reviews);
+	}
 
-    @GetMapping("/{reviewId}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Long reviewId) {
-        return reviewService.getReviewById(reviewId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{reviewId}")
+	public ResponseEntity<Review> getReviewById(@PathVariable Long reviewId) {
+		return reviewService.getReviewById(reviewId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
 }

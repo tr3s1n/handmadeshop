@@ -75,4 +75,15 @@ public class UserService {
         return userOptional;
     }
 
+/*    public Optional<User> getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            logger.info("User with username {} found", username);
+        } else {
+            logger.warn("User with username {} not found in method getUserById", username);
+            throw new UserNotFoundException("User with username " + username + " not found");
+        }
+        return userOptional;
+    }*/
+
 }

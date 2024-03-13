@@ -8,61 +8,60 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+	@Autowired
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
-        User newUser = new User();
-        newUser.setUsername(userDTO.getUsername());
-        newUser.setEmail(userDTO.getEmail());
-        User createdUser = userService.createUser(newUser);
+	@PostMapping
+	public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
+		User newUser = new User();
+		newUser.setUsername(userDTO.getUsername());
+		newUser.setEmail(userDTO.getEmail());
+		User createdUser = userService.createUser(newUser);
 
-        return ResponseEntity.ok(createdUser);
-    }
+		return ResponseEntity.ok(createdUser);
+	}
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDTO userDTO) {
-        User updatedUser = new User();
-        updatedUser.setUsername(userDTO.getUsername());
-        updatedUser.setEmail(userDTO.getEmail());
-        User resultUser = userService.updateUser(userId, updatedUser);
+	@PutMapping("/{userId}")
+	public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDTO userDTO) {
+		User updatedUser = new User();
+		updatedUser.setUsername(userDTO.getUsername());
+		updatedUser.setEmail(userDTO.getEmail());
+		User resultUser = userService.updateUser(userId, updatedUser);
 
-        if (resultUser != null) {
-            return ResponseEntity.ok(resultUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+		if (resultUser != null) {
+			return ResponseEntity.ok(resultUser);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+		userService.deleteUser(userId);
 
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.noContent().build();
+	}
 
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+	@GetMapping
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.getAllUsers();
 
-        return ResponseEntity.ok(users);
-    }
+		return ResponseEntity.ok(users);
+	}
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        return userService.getUserById(userId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{userId}")
+	public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+		return userService.getUserById(userId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 }

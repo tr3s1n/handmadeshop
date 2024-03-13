@@ -1,117 +1,80 @@
 package com.tresin.cvproj.handmade_shop.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@Setter
+@Getter
 @Entity
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "customer_user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
     private String username;
+
+    @JsonIgnore
     private String password;
+
     private String email;
+
+    private String firstName;
+
+    private String lastName;
+
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;
+
     @OneToOne(mappedBy = "user")
     private Address address;
+
     @OneToOne(mappedBy = "user")
     private Cart cart;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>();
 
-    // Constructors
-    public User() {
 
-    }
-
+    // Additional constructors
     public User(String username) {
         this.username = username;
     }
 
-    public User(String username, String password, String email, Address address) {
+    public User(String username, String password, String email, Address address, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.address = address;
-    }
-
-    public User(String username, String password, String email, List<Order> orders, List<Review> reviews, Address address, Cart cart) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.orders = orders;
-        this.reviews = reviews;
-        this.address = address;
-        this.cart = cart;
-    }
-
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
+        this.roles = roles;
     }
 }
