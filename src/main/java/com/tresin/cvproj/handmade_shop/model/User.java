@@ -11,23 +11,18 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Setter
-@Getter
 @Entity
 @Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customer_user")
@@ -64,12 +59,8 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
-
-    // Additional constructors
-    public User(String username) {
-        this.username = username;
-    }
-
+    // Builder for Constructor
+    @Builder
     public User(String username, String password, String email, Address address, Set<Role> roles) {
         this.username = username;
         this.password = password;
