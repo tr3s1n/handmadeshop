@@ -66,6 +66,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.address = address;
-        this.roles = roles;
+        this.roles = (roles != null) ? roles : new HashSet<>();
     }
+
 }

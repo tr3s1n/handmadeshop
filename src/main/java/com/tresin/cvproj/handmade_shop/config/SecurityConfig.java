@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
 	final JwtAuthFilter jwtAuthFilter;
-
 	public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
 		this.jwtAuthFilter = jwtAuthFilter;
 	}
@@ -40,10 +39,10 @@ public class SecurityConfig {
 		return httpSecurity
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/v1/auth/login").permitAll()
-						.requestMatchers("/api/v1/**").authenticated()
-				)
+						.requestMatchers("/api/v1/auth/login", "/api/v1/auth/refreshToken").permitAll()
+						.requestMatchers("/api/v1/**").authenticated())
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
@@ -59,7 +58,6 @@ public class SecurityConfig {
 		authenticationProvider.setUserDetailsService(userDetailsService());
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
 		return authenticationProvider;
-
 	}
 
 	@Bean

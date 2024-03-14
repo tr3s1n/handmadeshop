@@ -16,30 +16,20 @@ import java.util.Optional;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
 	@Autowired
 	private UserRepository userRepository;
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
-
-/*	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		logger.debug("Entering in loadUserByUsername Method...");
-		Optional<User> userOptional = userRepository.findByUsername(username);
-		User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found by username: " + username));
-		logger.info("User authenticated successfully.");
-		return new CustomUserDetails(user);
-	}*/
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-		logger.debug("Entering in loadUserByUsername Method...");
+		logger.debug("Entering loadUserByUsername method...");
 		User user = userRepository.findByUsername(username);
-		if(user == null){
+		if (user == null) {
 			logger.error("Username not found: " + username);
-			throw new UsernameNotFoundException("could not found user..!!");
+			throw new UsernameNotFoundException("Could not found user " + username);
 		}
-		logger.info("User authenticated successfully.");
+		logger.info("User {} authenticated successfully.", username);
 		return new CustomUserDetails(user);
 	}
 }
