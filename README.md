@@ -14,11 +14,14 @@ This project is intended to showcase my skills as a Software Developer and also 
 - [License](#license)
 
 ## Changelog
+- **14/03/2024**:
+Added token blacklist for expired JWT tokens, new logout and refreshToken endpoints. Updated tests, added first integration test for AuthController.
+
 - **13/03/2024**:
 Added JWT Authentication & Authorization and basic setup of Spring Security 6. Added lombok and refactored model classes and data seeder classes.
 
 - **11/03/2024**:
-Added tests for all the remaining services, test for UserController and example_test.properties.
+Added tests for all the remaining services and first Controller test for UserController.
 
 - **13/12/2023**:
 Added dependencies for Unit testing, created first Test class for Product service using Mockito and JUnit.
@@ -72,33 +75,26 @@ Make sure you have the following installed:
    spring.security.user.password=$SECURITY_PASSWORD_HERE$
    ```
 
-4. For running tests without issues, create a copy of example_test.properties located in /src/test/resources and rename it to test.properties. Change all the placeholders:
-
-   ```bash
-   test.username=$SECURITY_USER_HERE$
-   test.password=$SECURITY_PASSWORD_HERE$
-   ```   
-
-5. create a copy of example_compose.yaml and rename it to compose.yaml. Update the placeholders. Use the same credentials that you used in application.properties. Update rows:
+4. create a copy of example_compose.yaml and rename it to compose.yaml. Update the placeholders. Use the same credentials that you used in application.properties. Update rows:
 
    ```bash
       - 'POSTGRES_PASSWORD=$DB_PASSWORD_HERE$'
       - 'POSTGRES_USER=$DB_USER_HERE$'
    ```
    
-7. Build the project using gradle in your IDE or using the command:
+5. Build the project using gradle in your IDE or using the command:
 
    ```bash
    ./gradlew build
    ```
 
-8. Run the application:
+6. Run the application:
 
    ```bash
    ./gradlew bootRun
    ```
 
-After that the Spring Boot application will start and you should be able to access the application at http://localhost:8080 and send requests to API. Use the credentials you used in *application.properties* for *spring.security* settings.
+After that the Spring Boot application will start and you should be able to access the application at http://localhost:8080 and send requests to API.
 
 ## Technologies Used
 
