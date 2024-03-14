@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,11 +35,17 @@ public class CartServiceTest {
 
 	@Test
 	public void testCreateCart() {
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
 
 		Cart cart = new Cart(testUser, testProducts);
 		when(cartRepository.save(any(Cart.class))).thenReturn(cart);
@@ -51,11 +58,17 @@ public class CartServiceTest {
 	public void testDeleteCart() {
 		long cartIdToDelete = 1L;
 
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
 
 		Cart cartToDelete = new Cart(testUser, testProducts);
 		when(cartRepository.findById(cartIdToDelete)).thenReturn(Optional.of(cartToDelete));
@@ -68,17 +81,22 @@ public class CartServiceTest {
 	public void testUpdateCart() {
 		long cartIdToUpdate = 1L;
 
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
 
 		List<Product> testUpdatedProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
 				new Product("Product 2", 20.49),
-				new Product("Product 3", 12.99)
-		);
+				new Product("Product 3", 12.99));
 
 		Cart existingCart = new Cart(testUser, testProducts);
 		Cart updatedCartData = new Cart(testUser, testUpdatedProducts);
@@ -93,22 +111,34 @@ public class CartServiceTest {
 
 	@Test
 	public void testGetAllCarts() {
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
+		User testUser2 = User.builder()
+				.username("User 2")
+				.password("Password456")
+				.email("User2@gmail.com")
+				.address(new Address("Testovacieho 12", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
 
-		User testUser2 = new User("User 2", "Password456", "User2@gmail.com", new Address("Testovacieho 23", "Bratislava", "851 01"));
 		List<Product> testProducts2 = Arrays.asList(
 				new Product("Product 3", 12.99),
-				new Product("Product 4", 26.99)
-		);
+				new Product("Product 4", 26.99));
 
 		List<Cart> cartList = Arrays.asList(
 				new Cart(testUser, testProducts),
-				new Cart(testUser2, testProducts2)
-		);
+				new Cart(testUser2, testProducts2));
+
 		when(cartRepository.findAll()).thenReturn(cartList);
 		List<Cart> allCarts = cartService.getAllCarts();
 
@@ -120,7 +150,13 @@ public class CartServiceTest {
 	public void testGetCartById() {
 		long cartIdToFind = 1L;
 
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
 				new Product("Product 2", 20.49)

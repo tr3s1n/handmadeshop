@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.service;
 
+import com.tresin.cvproj.handmade_shop.model.Address;
 import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.model.Review;
 import com.tresin.cvproj.handmade_shop.model.User;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +35,15 @@ public class ReviewServiceTest {
 
 	@Test
 	public void testCreateReview() {
-		Review review = new Review(new User("User1"), new Product("Test Product", 10.99), 5, "Very good.");
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
+		Review review = new Review(testUser, new Product("Test Product", 10.99), 5, "Very good.");
 		when(reviewRepository.save(any(Review.class))).thenReturn(review);
 		Review createdReview = reviewService.createReview(review);
 
@@ -43,7 +53,16 @@ public class ReviewServiceTest {
 	@Test
 	public void testDeleteReview() {
 		long reviewIdToDelete = 1L;
-		Review reviewToDelete = new Review(new User("User1"), new Product("Test Product", 10.99), 5, "Very good.");
+
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
+		Review reviewToDelete = new Review(testUser, new Product("Test Product", 10.99), 5, "Very good.");
 		when(reviewRepository.findById(reviewIdToDelete)).thenReturn(Optional.of(reviewToDelete));
 		reviewService.deleteReview(reviewIdToDelete);
 
@@ -53,8 +72,17 @@ public class ReviewServiceTest {
 	@Test
 	public void testUpdateReview() {
 		long reviewIdToUpdate = 1L;
-		Review existingReview = new Review(new User("User1"), new Product("Test Product", 10.99), 5, "Very good.");
-		Review updatedReviewData = new Review(new User("User1"), new Product("Test Product", 10.99), 4, "Good, but not the best.");
+
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
+		Review existingReview = new Review(testUser, new Product("Test Product", 10.99), 5, "Very good.");
+		Review updatedReviewData = new Review(testUser, new Product("Test Product", 10.99), 4, "Good, but not the best.");
 		when(reviewRepository.findById(reviewIdToUpdate)).thenReturn(Optional.of(existingReview));
 		when(reviewRepository.save(any(Review.class))).thenAnswer(invocation -> invocation.getArgument(0));
 		Review updatedReview = reviewService.updateReview(reviewIdToUpdate, updatedReviewData);
@@ -68,9 +96,17 @@ public class ReviewServiceTest {
 
 	@Test
 	public void testGetAllReviews() {
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Review> reviewList = Arrays.asList(
-				new Review(new User("User1"), new Product("Test Product", 10.99), 5, "Very good."),
-				new Review(new User("User2"), new Product("Test Product 2", 15.99), 4, "Good, but not the best.")
+				new Review(testUser, new Product("Test Product", 10.99), 5, "Very good."),
+				new Review(testUser, new Product("Test Product 2", 15.99), 4, "Good, but not the best.")
 		);
 		when(reviewRepository.findAll()).thenReturn(reviewList);
 		List<Review> allReviews = reviewService.getAllReviews();
@@ -82,7 +118,16 @@ public class ReviewServiceTest {
 	@Test
 	public void testGetReviewById() {
 		long reviewIdToFind = 1L;
-		Review foundReview = new Review(new User("User1"), new Product("Test Product", 10.99), 5, "Very good.");
+
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
+		Review foundReview = new Review(testUser, new Product("Test Product", 10.99), 5, "Very good.");
 		when(reviewRepository.findById(reviewIdToFind)).thenReturn(Optional.of(foundReview));
 		Optional<Review> reviewById = reviewService.getReviewById(reviewIdToFind);
 

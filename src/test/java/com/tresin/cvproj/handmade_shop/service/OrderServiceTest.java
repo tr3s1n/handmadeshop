@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,11 +35,17 @@ public class OrderServiceTest {
 
 	@Test
 	public void testCreateOrder() {
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
 
 		Order order = new Order(testUser, testProducts);
 		when(orderRepository.save(any(Order.class))).thenReturn(order);
@@ -51,11 +58,17 @@ public class OrderServiceTest {
 	public void testDeleteOrder() {
 		long orderIdToDelete = 1L;
 
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
 
 		Order orderToDelete = new Order(testUser, testProducts);
 		when(orderRepository.findById(orderIdToDelete)).thenReturn(Optional.of(orderToDelete));
@@ -68,15 +81,21 @@ public class OrderServiceTest {
 	public void testUpdateOrder() {
 		long orderIdToUpdate = 1L;
 
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
+
 		List<Product> testUpdatedProducts = Arrays.asList(
 				new Product("Product 3", 11.99),
-				new Product("Product 4", 22.69)
-		);
+				new Product("Product 4", 22.69));
 
 		Order existingOrder = new Order(testUser, testProducts);
 		Order updatedOrderData = new Order(testUser, testUpdatedProducts);
@@ -91,20 +110,26 @@ public class OrderServiceTest {
 
 	@Test
 	public void testGetAllOrders() {
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
-				new Product("Product 2", 20.49)
-		);
+				new Product("Product 2", 20.49));
+
 		List<Product> testProducts2 = Arrays.asList(
 				new Product("Product 3", 11.99),
-				new Product("Product 4", 22.69)
-		);
+				new Product("Product 4", 22.69));
 
 		List<Order> orderList = Arrays.asList(
 				new Order(testUser, testProducts),
-				new Order(testUser, testProducts2)
-		);
+				new Order(testUser, testProducts2));
+
 		when(orderRepository.findAll()).thenReturn(orderList);
 		List<Order> allOrders = orderService.getAllOrders();
 
@@ -116,7 +141,14 @@ public class OrderServiceTest {
 	public void testGetOrderById() {
 		long orderIdToFind = 1L;
 
-		User testUser = new User("User 1", "Password123", "User@gmail.com", new Address("Testovacieho 11", "Košice", "040 01"));
+		User testUser = User.builder()
+				.username("User 1")
+				.password("Password123")
+				.email("User@gmail.com")
+				.address(new Address("Testovacieho 11", "Košice", "040 01"))
+				.roles(new HashSet<>())
+				.build();
+
 		List<Product> testProducts = Arrays.asList(
 				new Product("Product 1", 10.99),
 				new Product("Product 2", 20.49)

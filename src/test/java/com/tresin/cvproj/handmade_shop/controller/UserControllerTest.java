@@ -58,7 +58,7 @@ class UserControllerTest {
 
 		when(userService.createUser(any(User.class))).thenReturn(createdUser);
 
-		ResultActions resultActions = mockMvc.perform(post("/api/users")
+		ResultActions resultActions = mockMvc.perform(post("/api/v1/users")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(userDTO))
 				.with(httpBasic(testUsername, testPassword))
@@ -84,7 +84,7 @@ class UserControllerTest {
 		when(userService.updateUser(eq(1L), any(User.class))).thenReturn(updatedUser);
 		when(userService.updateUser(eq(2L), any(User.class))).thenReturn(null);
 
-		ResultActions resultActions = mockMvc.perform(put("/api/users/1")
+		ResultActions resultActions = mockMvc.perform(put("/api/v1/users/1")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(userDTO))
 				.with(httpBasic(testUsername, testPassword))
@@ -106,7 +106,7 @@ class UserControllerTest {
 
 	@Test
 	void testDeleteUser() throws Exception {
-		mockMvc.perform(delete("/api/users/1")
+		mockMvc.perform(delete("/api/v1/users/1")
 						.with(httpBasic(testUsername, testPassword))
 						.with(csrf()))
 				.andExpect(status().isNoContent());
@@ -123,7 +123,7 @@ class UserControllerTest {
 
 		when(userService.getAllUsers()).thenReturn(Collections.singletonList(user));
 
-		mockMvc.perform(get("/api/users")
+		mockMvc.perform(get("/api/v1/users")
 						.with(httpBasic(testUsername, testPassword))
 						.with(csrf()))
 				.andExpect(status().isOk())
@@ -143,7 +143,7 @@ class UserControllerTest {
 		when(userService.getUserById(1L)).thenReturn(Optional.of(user));
 		when(userService.getUserById(2L)).thenReturn(Optional.empty());
 
-		mockMvc.perform(get("/api/users/1")
+		mockMvc.perform(get("/api/v1/users/1")
 						.with(httpBasic(testUsername, testPassword))
 						.with(csrf()))
 				.andExpect(status().isOk())
@@ -152,7 +152,7 @@ class UserControllerTest {
 				.andExpect(jsonPath("$.email", is("test@example.com")));
 
 		// Test not found scenario
-		mockMvc.perform(get("/api/users/2")
+		mockMvc.perform(get("/api/v1/users/2")
 						.with(httpBasic(testUsername, testPassword)))
 				.andExpect(status().isNotFound());
 	}
