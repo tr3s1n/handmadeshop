@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.AddressApi;
 import com.tresin.cvproj.handmade_shop.dto.AddressDTO;
 import com.tresin.cvproj.handmade_shop.model.Address;
 import com.tresin.cvproj.handmade_shop.service.AddressService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/addresses")
-public class AddressController {
+public class AddressController implements AddressApi {
 
 	private final AddressService addressService;
 
