@@ -8,12 +8,15 @@ This project is intended to showcase my skills as a Software Developer and also 
 - [Changelog](#changelog)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
+- [Setting up SSL](#setting-up-ssl)
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Changelog
+- **18/03/2024**:
+Added SSL Configuration, refactored all controllers using Api interfaces.
+
 - **14/03/2024**:
 Added token blacklist for expired JWT tokens, new logout and refreshToken endpoints. Updated tests, added first integration test for AuthController.
 
@@ -95,6 +98,38 @@ Make sure you have the following installed:
    ```
 
 After that the Spring Boot application will start and you should be able to access the application at http://localhost:8080 and send requests to API.
+
+## Setting up SSL
+
+To enable SSL (Secure Sockets Layer) in your Spring Boot application, follow these steps:
+
+1. **Generate Keystore:**
+   - Open a terminal or command prompt.
+   - Navigate to the directory where you want to generate the keystore file.
+   - Run the following `keytool` command to generate the keystore:
+     ```bash
+     keytool -genkey -alias $SSL_KEYSTORE_ALIAS_HERE$ -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+     ```
+     This command generates a keystore named `keystore.p12` with the necessary parameters.
+     During the keystore generation process, you'll be prompted to enter information such as your name, organization, and location.
+     Provide the requested information as needed.
+
+2. **Configure Application:**
+   - Provide the keystore alias and password in the application.properties. set app.ssl.enabled to true:
+     ```properties
+     server.port=8443
+     server.ssl.key-store=keystore.p12
+     server.ssl.key-store-password=$SSL_KEYSTORE_PASSWORD_HERE$
+     server.ssl.keyStoreType=PKCS12
+     server.ssl.keyAlias=$SSL_KEYSTORE_ALIAS_HERE$
+     app.ssl.enabled=true
+     ```
+
+3. **Restart Application:**
+   - Restart your Spring Boot application for the changes to take effect.
+
+4. **Verification:**
+   - Access your application using `https` protocol (e.g., `https://localhost:8443`) to verify that SSL is enabled.
 
 ## Technologies Used
 
