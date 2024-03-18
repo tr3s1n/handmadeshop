@@ -7,12 +7,13 @@ import com.tresin.cvproj.handmade_shop.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/categories")
 public class CategoryController implements CategoryApi {
 
 	private final CategoryService categoryService;
@@ -23,7 +24,6 @@ public class CategoryController implements CategoryApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<Category> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
 		Category newCategory = new Category();
 		newCategory.setName(categoryDTO.getName());
@@ -34,7 +34,6 @@ public class CategoryController implements CategoryApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<Category> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
 		Category updatedCategory = new Category();
 		updatedCategory.setName(categoryDTO.getName());
@@ -49,7 +48,6 @@ public class CategoryController implements CategoryApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
 		categoryService.deleteCategory(id);
 
@@ -57,7 +55,6 @@ public class CategoryController implements CategoryApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<Category>> getAllCategories() {
 		List<Category> categories = categoryService.getAllCategories();
 
@@ -65,7 +62,6 @@ public class CategoryController implements CategoryApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
 		return categoryService.getCategoryById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}

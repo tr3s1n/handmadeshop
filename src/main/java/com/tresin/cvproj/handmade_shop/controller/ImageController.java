@@ -8,12 +8,13 @@ import com.tresin.cvproj.handmade_shop.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/images")
 public class ImageController implements ImageApi {
 
 	private final ImageService imageService;
@@ -24,7 +25,6 @@ public class ImageController implements ImageApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<Image> createImage(@Valid @RequestBody ImageDTO imageDTO) {
 		Image newImage = new Image();
 		newImage.setProduct(imageDTO.getProduct());
@@ -35,7 +35,6 @@ public class ImageController implements ImageApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<Image> updateImage(@PathVariable Long id, @Valid @RequestBody ImageDTO imageDTO) {
 		Image updatedImage = new Image();
 		updatedImage.setProduct(imageDTO.getProduct());
@@ -50,7 +49,6 @@ public class ImageController implements ImageApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
 		imageService.deleteImage(id);
 
@@ -58,7 +56,6 @@ public class ImageController implements ImageApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<Image>> getAllImages() {
 		List<Image> images = imageService.getAllImages();
 
@@ -66,13 +63,11 @@ public class ImageController implements ImageApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<Image> getImageById(@PathVariable Long id) {
 		return imageService.getImageById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@Override
-	@GetMapping("/{id}/product")
 	public ResponseEntity<Product> getProductByImageId(@PathVariable Long id) {
 		Image image = imageService.getImageById(id).orElse(null);
 

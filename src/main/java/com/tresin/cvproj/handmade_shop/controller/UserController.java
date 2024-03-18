@@ -9,17 +9,17 @@ import com.tresin.cvproj.handmade_shop.model.Review;
 import com.tresin.cvproj.handmade_shop.model.Role;
 import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/users")
 public class UserController implements UserApi {
 
 	private final UserService userService;
@@ -30,7 +30,6 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
 		User newUser = new User();
 		newUser.setUsername(userDTO.getUsername());
@@ -41,7 +40,6 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
 		User updatedUser = new User();
 		updatedUser.setUsername(userDTO.getUsername());
@@ -56,7 +54,6 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 
@@ -64,7 +61,6 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User> users = userService.getAllUsers();
 
@@ -72,7 +68,6 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable Long id) {
 		return userService.getUserById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}

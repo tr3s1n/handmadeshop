@@ -8,12 +8,13 @@ import com.tresin.cvproj.handmade_shop.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/carts")
 public class CartController implements CartApi {
 
 	private final CartService cartService;
@@ -24,7 +25,6 @@ public class CartController implements CartApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<Cart> createCart(@Valid @RequestBody CartDTO cartDTO) {
 		Cart newCart = new Cart();
 		newCart.setUser(cartDTO.getUser());
@@ -35,7 +35,6 @@ public class CartController implements CartApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<Cart> updateCart(@PathVariable Long id, @Valid @RequestBody CartDTO cartDTO) {
 		Cart updatedCart = new Cart();
 		updatedCart.setUser(cartDTO.getUser());
@@ -50,7 +49,6 @@ public class CartController implements CartApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
 		cartService.deleteCart(id);
 
@@ -58,7 +56,6 @@ public class CartController implements CartApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<Cart>> getAllCarts() {
 		List<Cart> carts = cartService.getAllCarts();
 
@@ -66,13 +63,11 @@ public class CartController implements CartApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<Cart> getCartById(@PathVariable Long id) {
 		return cartService.getCartById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@Override
-	@GetMapping("/{id}/user")
 	public ResponseEntity<User> getUserByCartId(@PathVariable Long id) {
 		Cart cart = cartService.getCartById(id).orElse(null);
 

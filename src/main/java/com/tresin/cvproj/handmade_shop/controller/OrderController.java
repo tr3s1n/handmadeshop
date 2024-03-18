@@ -8,12 +8,13 @@ import com.tresin.cvproj.handmade_shop.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/orders")
 public class OrderController implements OrderApi {
 
 	private final OrderService orderService;
@@ -24,7 +25,6 @@ public class OrderController implements OrderApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
 		Order newOrder = new Order();
 		newOrder.setUser(orderDTO.getUser());
@@ -35,7 +35,6 @@ public class OrderController implements OrderApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<Order> updateOrder(@PathVariable Long id, @Valid @RequestBody OrderDTO orderDTO) {
 		Order updatedOrder = new Order();
 		updatedOrder.setUser(orderDTO.getUser());
@@ -50,7 +49,6 @@ public class OrderController implements OrderApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
 		orderService.deleteOrder(id);
 
@@ -58,7 +56,6 @@ public class OrderController implements OrderApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<Order>> getAllOrders() {
 		List<Order> orders = orderService.getAllOrders();
 
@@ -66,13 +63,11 @@ public class OrderController implements OrderApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
 		return orderService.getOrderById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@Override
-	@GetMapping("/{id}/user")
 	public ResponseEntity<User> getUserByOrderId(@PathVariable Long id) {
 		Order order = orderService.getOrderById(id).orElse(null);
 

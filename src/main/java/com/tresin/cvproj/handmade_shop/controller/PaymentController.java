@@ -7,12 +7,13 @@ import com.tresin.cvproj.handmade_shop.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/payments")
 public class PaymentController implements PaymentApi {
 
 	private final PaymentService paymentService;
@@ -23,7 +24,6 @@ public class PaymentController implements PaymentApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<Payment> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) {
 		Payment newPayment = new Payment();
 		newPayment.setOrder(paymentDTO.getOrder());
@@ -36,7 +36,6 @@ public class PaymentController implements PaymentApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<Payment> updatePayment(@PathVariable Long id, @Valid @RequestBody PaymentDTO paymentDTO) {
 		Payment updatedPayment = new Payment();
 		updatedPayment.setOrder(paymentDTO.getOrder());
@@ -53,7 +52,6 @@ public class PaymentController implements PaymentApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
 		paymentService.deletePayment(id);
 
@@ -61,7 +59,6 @@ public class PaymentController implements PaymentApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<Payment>> getAllPayments() {
 		List<Payment> payments = paymentService.getAllPayments();
 
@@ -69,7 +66,6 @@ public class PaymentController implements PaymentApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<Payment> getPaymentById(@PathVariable Long id) {
 		return paymentService.getPaymentById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}

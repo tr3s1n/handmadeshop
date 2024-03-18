@@ -19,14 +19,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/auth")
 public class AuthController implements AuthApi {
 
 	private final JwtService jwtService;
@@ -42,7 +38,6 @@ public class AuthController implements AuthApi {
 	}
 
 	@Override
-	@PostMapping("/login")
 	public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
 		try {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
@@ -67,7 +62,6 @@ public class AuthController implements AuthApi {
 	}
 
 	@Override
-	@PostMapping("/refreshToken")
 	public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
 		try {
 			JwtResponseDTO jwtResponseDTO = refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
@@ -88,7 +82,6 @@ public class AuthController implements AuthApi {
 	}
 
 	@Override
-	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request) {
 		try {
 			String authorizationHeader = request.getHeader("Authorization");
@@ -106,7 +99,6 @@ public class AuthController implements AuthApi {
 
 	@Override
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping("/ping")
 	public String adminPingTest() {
 		try {
 			return "Welcome";

@@ -8,12 +8,13 @@ import com.tresin.cvproj.handmade_shop.service.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/addresses")
 public class AddressController implements AddressApi {
 
 	private final AddressService addressService;
@@ -24,7 +25,6 @@ public class AddressController implements AddressApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<Address> createAddress(@Valid @RequestBody AddressDTO addressDTO) {
 		Address newAddress = new Address();
 		newAddress.setUser(addressDTO.getUser());
@@ -37,7 +37,6 @@ public class AddressController implements AddressApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<Address> updateAddress(@PathVariable Long id, @Valid @RequestBody AddressDTO addressDTO) {
 		Address updatedAddress = new Address();
 		updatedAddress.setUser(addressDTO.getUser());
@@ -54,7 +53,6 @@ public class AddressController implements AddressApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
 		addressService.deleteAddress(id);
 
@@ -62,7 +60,6 @@ public class AddressController implements AddressApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<Address>> getAllAddresses() {
 		List<Address> addresses = addressService.getAllAddresses();
 
@@ -70,13 +67,11 @@ public class AddressController implements AddressApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<Address> getAddressById(@PathVariable Long id) {
 		return addressService.getAddressById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@Override
-	@GetMapping("/{id}/user")
 	public ResponseEntity<User> getUserByAddressId(@PathVariable Long id) {
 		Address address = addressService.getAddressById(id).orElse(null);
 

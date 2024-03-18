@@ -7,12 +7,13 @@ import com.tresin.cvproj.handmade_shop.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/products")
 public class ProductController implements ProductApi {
 
 	private final ProductService productService;
@@ -23,7 +24,6 @@ public class ProductController implements ProductApi {
 	}
 
 	@Override
-	@PostMapping
 	public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
 		Product newProduct = new Product();
 		newProduct.setName(productDTO.getName());
@@ -36,7 +36,6 @@ public class ProductController implements ProductApi {
 	}
 
 	@Override
-	@PutMapping("/{id}")
 	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
 		Product updatedProduct = new Product();
 		updatedProduct.setName(productDTO.getName());
@@ -53,7 +52,6 @@ public class ProductController implements ProductApi {
 	}
 
 	@Override
-	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);
 
@@ -61,7 +59,6 @@ public class ProductController implements ProductApi {
 	}
 
 	@Override
-	@GetMapping
 	public ResponseEntity<List<Product>> getAllProducts() {
 		List<Product> products = productService.getAllProducts();
 
@@ -69,7 +66,6 @@ public class ProductController implements ProductApi {
 	}
 
 	@Override
-	@GetMapping("/{id}")
 	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
 		return productService.getProductById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
