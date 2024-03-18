@@ -37,3 +37,4 @@ out/
 /compose.yaml
 /src/main/resources/application.properties
 /src/test/resources/test.properties
+/keystore.p12
