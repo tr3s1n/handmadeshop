@@ -1,7 +1,9 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.OrderApi;
 import com.tresin.cvproj.handmade_shop.dto.OrderDTO;
 import com.tresin.cvproj.handmade_shop.model.Order;
+import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/orders")
-public class OrderController {
+public class OrderController implements OrderApi {
 
 	private final OrderService orderService;
 
@@ -21,6 +23,7 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
 		Order newOrder = new Order();
@@ -31,12 +34,13 @@ public class OrderController {
 		return ResponseEntity.ok(createdOrder);
 	}
 
-	@PutMapping("/{orderId}")
-	public ResponseEntity<Order> updateOrder(@PathVariable Long orderId, @Valid @RequestBody OrderDTO orderDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Order> updateOrder(@PathVariable Long id, @Valid @RequestBody OrderDTO orderDTO) {
 		Order updatedOrder = new Order();
 		updatedOrder.setUser(orderDTO.getUser());
 		updatedOrder.setProducts(orderDTO.getProducts());
-		Order resultOrder = orderService.updateOrder(orderId, updatedOrder);
+		Order resultOrder = orderService.updateOrder(id, updatedOrder);
 
 		if (resultOrder != null) {
 			return ResponseEntity.ok(resultOrder);
@@ -45,13 +49,15 @@ public class OrderController {
 		}
 	}
 
-	@DeleteMapping("/{orderId}")
-	public ResponseEntity<Void> deleteOrder(@PathVariable Long orderId) {
-		orderService.deleteOrder(orderId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+		orderService.deleteOrder(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Order>> getAllOrders() {
 		List<Order> orders = orderService.getAllOrders();
@@ -59,9 +65,27 @@ public class OrderController {
 		return ResponseEntity.ok(orders);
 	}
 
-	@GetMapping("/{orderId}")
-	public ResponseEntity<Order> getOrderById(@PathVariable Long orderId) {
-		return orderService.getOrderById(orderId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
+		return orderService.getOrderById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
+	@Override
+	@GetMapping("/{id}/user")
+	public ResponseEntity<User> getUserByOrderId(@PathVariable Long id) {
+		Order order = orderService.getOrderById(id).orElse(null);
+
+		if (order != null) {
+			User user = order.getUser();
+			if (user != null) {
+				return ResponseEntity.ok(user);
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }

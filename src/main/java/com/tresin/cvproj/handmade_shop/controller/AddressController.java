@@ -3,6 +3,7 @@ package com.tresin.cvproj.handmade_shop.controller;
 import com.tresin.cvproj.handmade_shop.api.AddressApi;
 import com.tresin.cvproj.handmade_shop.dto.AddressDTO;
 import com.tresin.cvproj.handmade_shop.model.Address;
+import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class AddressController implements AddressApi {
 		this.addressService = addressService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Address> createAddress(@Valid @RequestBody AddressDTO addressDTO) {
 		Address newAddress = new Address();
@@ -34,14 +36,15 @@ public class AddressController implements AddressApi {
 		return ResponseEntity.ok(createdAddress);
 	}
 
-	@PutMapping("/{addressId}")
-	public ResponseEntity<Address> updateAddress(@PathVariable Long addressId, @Valid @RequestBody AddressDTO addressDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Address> updateAddress(@PathVariable Long id, @Valid @RequestBody AddressDTO addressDTO) {
 		Address updatedAddress = new Address();
 		updatedAddress.setUser(addressDTO.getUser());
 		updatedAddress.setStreet(addressDTO.getStreet());
 		updatedAddress.setCity(addressDTO.getCity());
 		updatedAddress.setZipCode(addressDTO.getZipCode());
-		Address resultAddress = addressService.updateAddress(addressId, updatedAddress);
+		Address resultAddress = addressService.updateAddress(id, updatedAddress);
 
 		if (resultAddress != null) {
 			return ResponseEntity.ok(resultAddress);
@@ -50,14 +53,15 @@ public class AddressController implements AddressApi {
 		}
 	}
 
-	@DeleteMapping("/{addressId}")
-	public ResponseEntity<Void> deleteAddress(@PathVariable Long addressId) {
-		addressService.deleteAddress(addressId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
+		addressService.deleteAddress(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
-
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Address>> getAllAddresses() {
 		List<Address> addresses = addressService.getAllAddresses();
@@ -65,9 +69,26 @@ public class AddressController implements AddressApi {
 		return ResponseEntity.ok(addresses);
 	}
 
-	@GetMapping("/{addressId}")
-	public ResponseEntity<Address> getAddressById(@PathVariable Long addressId) {
-		return addressService.getAddressById(addressId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Address> getAddressById(@PathVariable Long id) {
+		return addressService.getAddressById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@Override
+	@GetMapping("/{id}/user")
+	public ResponseEntity<User> getUserByAddressId(@PathVariable Long id) {
+		Address address = addressService.getAddressById(id).orElse(null);
+
+		if (address != null) {
+			User user = address.getUser();
+			if (user != null) {
+				return ResponseEntity.ok(user);
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 }

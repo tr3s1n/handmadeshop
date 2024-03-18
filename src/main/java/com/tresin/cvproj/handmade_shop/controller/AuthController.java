@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.AuthApi;
 import com.tresin.cvproj.handmade_shop.dto.AuthRequestDTO;
 import com.tresin.cvproj.handmade_shop.dto.JwtResponseDTO;
 import com.tresin.cvproj.handmade_shop.dto.RefreshTokenRequestDTO;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthController {
+public class AuthController implements AuthApi {
 
 	private final JwtService jwtService;
 	private final RefreshTokenService refreshTokenService;
@@ -40,8 +41,9 @@ public class AuthController {
 		this.tokenBlacklist = tokenBlacklist;
 	}
 
+	@Override
 	@PostMapping("/login")
-	public ResponseEntity<?> AuthenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
+	public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequestDTO authRequestDTO) {
 		try {
 			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
 			if (authentication.isAuthenticated()) {
@@ -64,6 +66,7 @@ public class AuthController {
 		}
 	}
 
+	@Override
 	@PostMapping("/refreshToken")
 	public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
 		try {
@@ -84,6 +87,7 @@ public class AuthController {
 		}
 	}
 
+	@Override
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request) {
 		try {
@@ -100,6 +104,7 @@ public class AuthController {
 		}
 	}
 
+	@Override
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/ping")
 	public String adminPingTest() {

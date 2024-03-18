@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.UserApi;
 import com.tresin.cvproj.handmade_shop.dto.UserDTO;
 import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.UserService;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class UserController implements UserApi {
 
 	private final UserService userService;
 
@@ -22,6 +23,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
 		User newUser = new User();
@@ -32,12 +34,13 @@ public class UserController {
 		return ResponseEntity.ok(createdUser);
 	}
 
-	@PutMapping("/{userId}")
-	public ResponseEntity<User> updateUser(@PathVariable Long userId, @Valid @RequestBody UserDTO userDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
 		User updatedUser = new User();
 		updatedUser.setUsername(userDTO.getUsername());
 		updatedUser.setEmail(userDTO.getEmail());
-		User resultUser = userService.updateUser(userId, updatedUser);
+		User resultUser = userService.updateUser(id, updatedUser);
 
 		if (resultUser != null) {
 			return ResponseEntity.ok(resultUser);
@@ -46,13 +49,15 @@ public class UserController {
 		}
 	}
 
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-		userService.deleteUser(userId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@GetMapping
 	public ResponseEntity<List<User>> getAllUsers() {
 		List<User> users = userService.getAllUsers();
@@ -60,8 +65,9 @@ public class UserController {
 		return ResponseEntity.ok(users);
 	}
 
-	@GetMapping("/{userId}")
-	public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-		return userService.getUserById(userId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<User> getUserById(@PathVariable Long id) {
+		return userService.getUserById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 }

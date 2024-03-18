@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.CategoryApi;
 import com.tresin.cvproj.handmade_shop.dto.CategoryDTO;
 import com.tresin.cvproj.handmade_shop.model.Category;
 import com.tresin.cvproj.handmade_shop.service.CategoryService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/categories")
-public class CategoryController {
+public class CategoryController implements CategoryApi {
 
 	private final CategoryService categoryService;
 
@@ -21,6 +22,7 @@ public class CategoryController {
 		this.categoryService = categoryService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Category> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
 		Category newCategory = new Category();
@@ -31,12 +33,13 @@ public class CategoryController {
 		return ResponseEntity.ok(createdCategory);
 	}
 
-	@PutMapping("/{categoryId}")
-	public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryDTO categoryDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Category> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
 		Category updatedCategory = new Category();
 		updatedCategory.setName(categoryDTO.getName());
 		updatedCategory.setProducts(categoryDTO.getProducts());
-		Category resultCategory = categoryService.updateCategory(categoryId, updatedCategory);
+		Category resultCategory = categoryService.updateCategory(id, updatedCategory);
 
 		if (resultCategory != null) {
 			return ResponseEntity.ok(resultCategory);
@@ -45,14 +48,15 @@ public class CategoryController {
 		}
 	}
 
-	@DeleteMapping("/{categoryId}")
-	public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) {
-		categoryService.deleteCategory(categoryId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+		categoryService.deleteCategory(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
-	// Again, not sure if this is good to have for any purpose
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Category>> getAllCategories() {
 		List<Category> categories = categoryService.getAllCategories();
@@ -60,9 +64,10 @@ public class CategoryController {
 		return ResponseEntity.ok(categories);
 	}
 
-	@GetMapping("/{categoryId}")
-	public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
-		return categoryService.getCategoryById(categoryId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
+		return categoryService.getCategoryById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }

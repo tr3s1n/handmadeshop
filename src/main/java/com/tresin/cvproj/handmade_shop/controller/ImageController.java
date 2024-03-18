@@ -1,7 +1,9 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.ImageApi;
 import com.tresin.cvproj.handmade_shop.dto.ImageDTO;
 import com.tresin.cvproj.handmade_shop.model.Image;
+import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/images")
-public class ImageController {
+public class ImageController implements ImageApi {
 
 	private final ImageService imageService;
 
@@ -21,6 +23,7 @@ public class ImageController {
 		this.imageService = imageService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Image> createImage(@Valid @RequestBody ImageDTO imageDTO) {
 		Image newImage = new Image();
@@ -31,12 +34,13 @@ public class ImageController {
 		return ResponseEntity.ok(createdImage);
 	}
 
-	@PutMapping("/{imageId}")
-	public ResponseEntity<Image> updateImage(@PathVariable Long imageId, @Valid @RequestBody ImageDTO imageDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Image> updateImage(@PathVariable Long id, @Valid @RequestBody ImageDTO imageDTO) {
 		Image updatedImage = new Image();
 		updatedImage.setProduct(imageDTO.getProduct());
 		updatedImage.setUrl(imageDTO.getUrl());
-		Image resultImage = imageService.updateImage(imageId, updatedImage);
+		Image resultImage = imageService.updateImage(id, updatedImage);
 
 		if (resultImage != null) {
 			return ResponseEntity.ok(resultImage);
@@ -45,13 +49,15 @@ public class ImageController {
 		}
 	}
 
-	@DeleteMapping("/{imageId}")
-	public ResponseEntity<Void> deleteImage(@PathVariable Long imageId) {
-		imageService.deleteImage(imageId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
+		imageService.deleteImage(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Image>> getAllImages() {
 		List<Image> images = imageService.getAllImages();
@@ -59,9 +65,27 @@ public class ImageController {
 		return ResponseEntity.ok(images);
 	}
 
-	@GetMapping("/{imageId}")
-	public ResponseEntity<Image> getImageById(@PathVariable Long imageId) {
-		return imageService.getImageById(imageId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Image> getImageById(@PathVariable Long id) {
+		return imageService.getImageById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
+	@Override
+	@GetMapping("/{id}/product")
+	public ResponseEntity<Product> getProductByImageId(@PathVariable Long id) {
+		Image image = imageService.getImageById(id).orElse(null);
+
+		if (image != null) {
+			Product product = image.getProduct();
+			if (product != null) {
+				return ResponseEntity.ok(product);
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }

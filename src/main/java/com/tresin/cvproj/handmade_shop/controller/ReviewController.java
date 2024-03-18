@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.ReviewApi;
 import com.tresin.cvproj.handmade_shop.dto.ReviewDTO;
 import com.tresin.cvproj.handmade_shop.model.Review;
 import com.tresin.cvproj.handmade_shop.service.ReviewService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
-public class ReviewController {
+public class ReviewController implements ReviewApi {
 
 	private final ReviewService reviewService;
 
@@ -21,6 +22,7 @@ public class ReviewController {
 		this.reviewService = reviewService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Review> createReview(@Valid @RequestBody ReviewDTO reviewDTO) {
 		Review newReview = new Review();
@@ -33,14 +35,15 @@ public class ReviewController {
 		return ResponseEntity.ok(createdReview);
 	}
 
-	@PutMapping("/{reviewId}")
-	public ResponseEntity<Review> updateReview(@PathVariable Long reviewId, @Valid @RequestBody ReviewDTO reviewDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Review> updateReview(@PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
 		Review updatedReview = new Review();
 		updatedReview.setUser(reviewDTO.getUser());
 		updatedReview.setProduct(reviewDTO.getProduct());
 		updatedReview.setRating(reviewDTO.getRating());
 		updatedReview.setComment(reviewDTO.getComment());
-		Review resultReview = reviewService.updateReview(reviewId, updatedReview);
+		Review resultReview = reviewService.updateReview(id, updatedReview);
 
 		if (resultReview != null) {
 			return ResponseEntity.ok(resultReview);
@@ -49,13 +52,15 @@ public class ReviewController {
 		}
 	}
 
-	@DeleteMapping("/{reviewId}")
-	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
-		reviewService.deleteReview(reviewId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+		reviewService.deleteReview(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Review>> getAllReviews() {
 		List<Review> reviews = reviewService.getAllReviews();
@@ -63,9 +68,10 @@ public class ReviewController {
 		return ResponseEntity.ok(reviews);
 	}
 
-	@GetMapping("/{reviewId}")
-	public ResponseEntity<Review> getReviewById(@PathVariable Long reviewId) {
-		return reviewService.getReviewById(reviewId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
+		return reviewService.getReviewById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }

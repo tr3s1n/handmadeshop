@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.PaymentApi;
 import com.tresin.cvproj.handmade_shop.dto.PaymentDTO;
 import com.tresin.cvproj.handmade_shop.model.Payment;
 import com.tresin.cvproj.handmade_shop.service.PaymentService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/payments")
-public class PaymentController {
+public class PaymentController implements PaymentApi {
 
 	private final PaymentService paymentService;
 
@@ -21,6 +22,7 @@ public class PaymentController {
 		this.paymentService = paymentService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Payment> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) {
 		Payment newPayment = new Payment();
@@ -33,14 +35,15 @@ public class PaymentController {
 		return ResponseEntity.ok(createdPayment);
 	}
 
-	@PutMapping("/{paymentId}")
-	public ResponseEntity<Payment> updatePayment(@PathVariable Long paymentId, @Valid @RequestBody PaymentDTO paymentDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Payment> updatePayment(@PathVariable Long id, @Valid @RequestBody PaymentDTO paymentDTO) {
 		Payment updatedPayment = new Payment();
 		updatedPayment.setOrder(paymentDTO.getOrder());
 		updatedPayment.setPaymentMethod(paymentDTO.getPaymentMethod());
 		updatedPayment.setAmount(paymentDTO.getAmount());
 		updatedPayment.setPaymentDate(paymentDTO.getPaymentDate());
-		Payment resultPayment = paymentService.updatePayment(paymentId, updatedPayment);
+		Payment resultPayment = paymentService.updatePayment(id, updatedPayment);
 
 		if (resultPayment != null) {
 			return ResponseEntity.ok(resultPayment);
@@ -49,13 +52,15 @@ public class PaymentController {
 		}
 	}
 
-	@DeleteMapping("/{paymentId}")
-	public ResponseEntity<Void> deletePayment(@PathVariable Long paymentId) {
-		paymentService.deletePayment(paymentId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
+		paymentService.deletePayment(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Payment>> getAllPayments() {
 		List<Payment> payments = paymentService.getAllPayments();
@@ -63,9 +68,10 @@ public class PaymentController {
 		return ResponseEntity.ok(payments);
 	}
 
-	@GetMapping("/{paymentId}")
-	public ResponseEntity<Payment> getPaymentById(@PathVariable Long paymentId) {
-		return paymentService.getPaymentById(paymentId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Payment> getPaymentById(@PathVariable Long id) {
+		return paymentService.getPaymentById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }

@@ -2,6 +2,7 @@ package com.tresin.cvproj.handmade_shop.api;
 
 import com.tresin.cvproj.handmade_shop.dto.AddressDTO;
 import com.tresin.cvproj.handmade_shop.model.Address;
+import com.tresin.cvproj.handmade_shop.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +34,8 @@ public interface AddressApi {
 			@ApiResponse(responseCode = "200", description = "successful operation"),
 			@ApiResponse(responseCode = "404", description = "Address not found")
 	})
-	@PutMapping("/{addressId}")
-	ResponseEntity<Address> updateAddress(@PathVariable Long addressId, @Valid @RequestBody AddressDTO addressDTO);
+	@PutMapping("/{id}")
+	ResponseEntity<Address> updateAddress(@PathVariable Long id, @Valid @RequestBody AddressDTO addressDTO);
 
 	@Operation(
 			summary = "Delete address",
@@ -43,8 +44,8 @@ public interface AddressApi {
 			@ApiResponse(responseCode = "204", description = "successful operation"),
 			@ApiResponse(responseCode = "404", description = "Address not found")
 	})
-	@DeleteMapping("/{addressId}")
-	ResponseEntity<Void> deleteAddress(@PathVariable Long addressId);
+	@DeleteMapping("/{id}")
+	ResponseEntity<Void> deleteAddress(@PathVariable Long id);
 
 	@Operation(
 			summary = "Get all addresses",
@@ -62,6 +63,16 @@ public interface AddressApi {
 			@ApiResponse(responseCode = "200", description = "successful operation"),
 			@ApiResponse(responseCode = "404", description = "Address not found")
 	})
-	@GetMapping("/{addressId}")
-	ResponseEntity<Address> getAddressById(@PathVariable Long addressId);
+	@GetMapping("/{id}")
+	ResponseEntity<Address> getAddressById(@PathVariable Long id);
+
+	@Operation(
+			summary = "Get user by address ID",
+			description = "Retrieves the user associated with the address by its ID")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation"),
+			@ApiResponse(responseCode = "404", description = "Address or user not found")
+	})
+	@GetMapping("/{id}/user")
+	ResponseEntity<User> getUserByAddressId(@PathVariable Long id);
 }

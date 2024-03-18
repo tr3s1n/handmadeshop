@@ -1,7 +1,9 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.CartApi;
 import com.tresin.cvproj.handmade_shop.dto.CartDTO;
 import com.tresin.cvproj.handmade_shop.model.Cart;
+import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/carts")
-public class CartController {
+public class CartController implements CartApi {
 
 	private final CartService cartService;
 
@@ -21,6 +23,7 @@ public class CartController {
 		this.cartService = cartService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Cart> createCart(@Valid @RequestBody CartDTO cartDTO) {
 		Cart newCart = new Cart();
@@ -31,12 +34,13 @@ public class CartController {
 		return ResponseEntity.ok(createdCart);
 	}
 
-	@PutMapping("/{cartId}")
-	public ResponseEntity<Cart> updateCart(@PathVariable Long cartId, @Valid @RequestBody CartDTO cartDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Cart> updateCart(@PathVariable Long id, @Valid @RequestBody CartDTO cartDTO) {
 		Cart updatedCart = new Cart();
 		updatedCart.setUser(cartDTO.getUser());
 		updatedCart.setProducts(cartDTO.getProducts());
-		Cart resultCart = cartService.updateCart(cartId, updatedCart);
+		Cart resultCart = cartService.updateCart(id, updatedCart);
 
 		if (resultCart != null) {
 			return ResponseEntity.ok(resultCart);
@@ -45,14 +49,15 @@ public class CartController {
 		}
 	}
 
-	@DeleteMapping("/{cartId}")
-	public ResponseEntity<Void> deleteCart(@PathVariable Long cartId) {
-		cartService.deleteCart(cartId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
+		cartService.deleteCart(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
-	// Not sure if this is good to have for any purpose
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Cart>> getAllCarts() {
 		List<Cart> carts = cartService.getAllCarts();
@@ -60,9 +65,27 @@ public class CartController {
 		return ResponseEntity.ok(carts);
 	}
 
-	@GetMapping("/{cartId}")
-	public ResponseEntity<Cart> getCartById(@PathVariable Long cartId) {
-		return cartService.getCartById(cartId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Cart> getCartById(@PathVariable Long id) {
+		return cartService.getCartById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
+	@Override
+	@GetMapping("/{id}/user")
+	public ResponseEntity<User> getUserByCartId(@PathVariable Long id) {
+		Cart cart = cartService.getCartById(id).orElse(null);
+
+		if (cart != null) {
+			User user = cart.getUser();
+			if (user != null) {
+				return ResponseEntity.ok(user);
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }

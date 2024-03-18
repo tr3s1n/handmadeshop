@@ -1,5 +1,6 @@
 package com.tresin.cvproj.handmade_shop.controller;
 
+import com.tresin.cvproj.handmade_shop.api.ProductApi;
 import com.tresin.cvproj.handmade_shop.dto.ProductDTO;
 import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.service.ProductService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
-public class ProductController {
+public class ProductController implements ProductApi {
 
 	private final ProductService productService;
 
@@ -21,6 +22,7 @@ public class ProductController {
 		this.productService = productService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
 		Product newProduct = new Product();
@@ -33,14 +35,15 @@ public class ProductController {
 		return ResponseEntity.ok(createdProduct);
 	}
 
-	@PutMapping("/{productId}")
-	public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @Valid @RequestBody ProductDTO productDTO) {
+	@Override
+	@PutMapping("/{id}")
+	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
 		Product updatedProduct = new Product();
 		updatedProduct.setName(productDTO.getName());
 		updatedProduct.setPrice(productDTO.getPrice());
 		updatedProduct.setCategories(productDTO.getCategories());
 		updatedProduct.setImages(productDTO.getImages());
-		Product resultProduct = productService.updateProduct(productId, updatedProduct);
+		Product resultProduct = productService.updateProduct(id, updatedProduct);
 
 		if (resultProduct != null) {
 			return ResponseEntity.ok(resultProduct);
@@ -49,13 +52,15 @@ public class ProductController {
 		}
 	}
 
-	@DeleteMapping("/{productId}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
-		productService.deleteProduct(productId);
+	@Override
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+		productService.deleteProduct(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@GetMapping
 	public ResponseEntity<List<Product>> getAllProducts() {
 		List<Product> products = productService.getAllProducts();
@@ -63,9 +68,10 @@ public class ProductController {
 		return ResponseEntity.ok(products);
 	}
 
-	@GetMapping("/{productId}")
-	public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
-		return productService.getProductById(productId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	@GetMapping("/{id}")
+	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+		return productService.getProductById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }
