@@ -1,7 +1,7 @@
 # Handmade Shop Project
 
 This is a simple Java Spring Boot project for an e-commerce web application where my mom will be able to sell her handmade crafts. 
-This project is intended to showcase my skills as a Software Developer and also it serves as a practical application for learning and experimenting with various technologies.
+This project is intended to showcase my skills as a Software Developer, and also it serves as a practical application for learning and experimenting with various technologies.
 
 ## Table of Contents
 
@@ -57,47 +57,47 @@ Make sure you have the following installed:
 
 ## Getting Started
 
-1. Clone the repository:
-
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/your-username/handmade-shop.git
    ```
    
-2. Navigate to the project directory:
-
-   ```bash
-   cd handmade-shop
-   ```
+2. **Navigate to the project directory:**
+    ```bash
+    cd handmade-shop
+    ```
    
-3. Create a copy of example_application.properties and rename it to application.properties. Change all the placeholders:
+3. **Prepare application.properties file**
+   - Create a copy of example_application.properties and rename it to application.properties.
+   - Change all the placeholders:
+   ```properties
+    spring.datasource.username=$DB_USER_HERE$
+    spring.datasource.password=$DB_PASSWORD_HERE$
+    spring.security.user.name=$SECURITY_USER_HERE$
+    spring.security.user.password=$SECURITY_PASSWORD_HERE$
+    ```
 
-   ```bash
-   spring.datasource.username=$DB_USER_HERE$
-   spring.datasource.password=$DB_PASSWORD_HERE$
-   spring.security.user.name=$SECURITY_USER_HERE$
-   spring.security.user.password=$SECURITY_PASSWORD_HERE$
-   ```
-
-4. create a copy of example_compose.yaml and rename it to compose.yaml. Update the placeholders. Use the same credentials that you used in application.properties. Update rows:
-
-   ```bash
-      - 'POSTGRES_PASSWORD=$DB_PASSWORD_HERE$'
-      - 'POSTGRES_USER=$DB_USER_HERE$'
-   ```
+4. **Prepare compose.yaml file**
+    - Create a copy of example_compose.yaml and rename it to compose.yaml.
+    - Use the same credentials that you used in application.properties instead of the placeholders for `POSTGRES_PASSWORD` and `POSTGRES_USER`:
+    ```properties
+    POSTGRES_PASSWORD=$DB_PASSWORD_HERE$
+    POSTGRES_USER=$DB_USER_HERE$
+    ```
    
-5. Build the project using gradle in your IDE or using the command:
+5. **Build the project using gradle in your IDE or using the command:**
+    ```bash
+    ./gradlew build
+    ```
 
-   ```bash
-   ./gradlew build
-   ```
-
-6. Run the application:
-
+6. **Run the application:**
    ```bash
    ./gradlew bootRun
    ```
 
-After that the Spring Boot application will start and you should be able to access the application at http://localhost:8080 and send requests to API.
+- After that, the Spring Boot application will start, and you should be able to access the application port that you set in `server.port` property in `application.properties` file.
+- To access Swagger API documentation, visit https://localhost:8443/swagger-ui/index.html
+
 
 ## Setting up SSL
 
