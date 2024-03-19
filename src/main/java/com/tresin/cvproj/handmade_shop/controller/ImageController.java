@@ -68,19 +68,7 @@ public class ImageController implements ImageApi {
 	}
 
 	@Override
-	public ResponseEntity<Product> getProductByImageId(@PathVariable Long id) {
-		Image image = imageService.getImageById(id).orElse(null);
-
-		if (image != null) {
-			Product product = image.getProduct();
-			if (product != null) {
-				return ResponseEntity.ok(product);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<List<Image>> getImagesByProductId(Long productId) {
+		return null;
 	}
-
 }

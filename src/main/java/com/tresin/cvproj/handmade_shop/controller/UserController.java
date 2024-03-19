@@ -78,22 +78,22 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Order>> getUserOrders(Long id) {
+	public ResponseEntity<List<Order>> getOrdersByUserId(Long id) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<List<Review>> getUserReviews(Long id) {
+	public ResponseEntity<List<Review>> getReviewsByUserId(Long id) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Address> getUserAddress(Long id) {
+	public ResponseEntity<Address> getAddressByUserId(Long id) {
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<Cart> getUserCart(Long id) {
+	public ResponseEntity<Cart> getCartByUserId(Long id) {
 		return null;
 	}
 
@@ -108,7 +108,7 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	public ResponseEntity<Set<Role>> getUserRoles(Long id) {
+	public ResponseEntity<Set<Role>> getRolesByUserId(Long id) {
 		return null;
 	}
 

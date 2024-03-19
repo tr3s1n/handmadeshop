@@ -2,7 +2,6 @@ package com.tresin.cvproj.handmade_shop.api;
 
 import com.tresin.cvproj.handmade_shop.dto.OrderDTO;
 import com.tresin.cvproj.handmade_shop.model.Order;
-import com.tresin.cvproj.handmade_shop.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -72,12 +71,34 @@ public interface OrderApi {
 	ResponseEntity<Order> getOrderById(@PathVariable Long id);
 
 	@Operation(
-			summary = "Get user by order ID",
-			description = "Retrieves the user associated with the order by its ID")
+			summary = "Get orders by user ID",
+			description = "Retrieves orders associated with a specific user"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation")
+	})
+	@GetMapping("/user/{userId}")
+	ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId);
+
+	@Operation(
+			summary = "Get order by payment ID",
+			description = "Retrieves an order associated with a specific payment"
+	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation"),
-			@ApiResponse(responseCode = "404", description = "user or order not found")
+			@ApiResponse(responseCode = "404", description = "Order not found")
 	})
-	@GetMapping("/{id}/user")
-	ResponseEntity<User> getUserByOrderId(@PathVariable Long id);
+	@GetMapping("/payment/{paymentId}")
+	ResponseEntity<Order> getOrderByPaymentId(@PathVariable Long paymentId);
+
+	@Operation(
+			summary = "Get total count of orders for a product",
+			description = "Retrieves the total count of orders for a specific product"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation"),
+			@ApiResponse(responseCode = "404", description = "Product not found or no orders found for the product")
+	})
+	@GetMapping("/product/{productId}/count")
+	ResponseEntity<Integer> getOrderCountByProductId(@PathVariable Long productId);
 }

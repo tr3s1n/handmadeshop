@@ -70,4 +70,9 @@ public class ReviewController implements ReviewApi {
 		return reviewService.getReviewById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@Override
+	public ResponseEntity<List<Review>> getReviewsByUserId(Long userId) {
+		return null;
+	}
+
 }

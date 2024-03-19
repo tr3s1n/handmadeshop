@@ -72,18 +72,8 @@ public class AddressController implements AddressApi {
 	}
 
 	@Override
-	public ResponseEntity<User> getUserByAddressId(@PathVariable Long id) {
-		Address address = addressService.getAddressById(id).orElse(null);
-
-		if (address != null) {
-			User user = address.getUser();
-			if (user != null) {
-				return ResponseEntity.ok(user);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<Address> getAddressByUserId(Long userId) {
+		return null;
 	}
+
 }

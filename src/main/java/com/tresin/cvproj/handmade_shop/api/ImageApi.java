@@ -2,8 +2,6 @@ package com.tresin.cvproj.handmade_shop.api;
 
 import com.tresin.cvproj.handmade_shop.dto.ImageDTO;
 import com.tresin.cvproj.handmade_shop.model.Image;
-import com.tresin.cvproj.handmade_shop.model.Product;
-import com.tresin.cvproj.handmade_shop.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -73,12 +71,12 @@ public interface ImageApi {
 	ResponseEntity<Image> getImageById(@PathVariable Long id);
 
 	@Operation(
-			summary = "Get product by image ID",
-			description = "Retrieves the product associated with the image by its ID")
+			summary = "Get images by product ID",
+			description = "Retrieves images associated with a specific product"
+	)
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "successful operation"),
-			@ApiResponse(responseCode = "404", description = "Image or product not found")
+			@ApiResponse(responseCode = "200", description = "successful operation")
 	})
-	@GetMapping("/{id}/product")
-	ResponseEntity<Product> getProductByImageId(@PathVariable Long id);
+	@GetMapping("/product/{productId}")
+	ResponseEntity<List<Image>> getImagesByProductId(@PathVariable Long productId);
 }

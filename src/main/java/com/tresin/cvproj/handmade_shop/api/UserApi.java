@@ -1,19 +1,25 @@
 package com.tresin.cvproj.handmade_shop.api;
 
 import com.tresin.cvproj.handmade_shop.dto.UserDTO;
-import com.tresin.cvproj.handmade_shop.model.User;
-import com.tresin.cvproj.handmade_shop.model.Order;
-import com.tresin.cvproj.handmade_shop.model.Review;
 import com.tresin.cvproj.handmade_shop.model.Address;
 import com.tresin.cvproj.handmade_shop.model.Cart;
+import com.tresin.cvproj.handmade_shop.model.Order;
+import com.tresin.cvproj.handmade_shop.model.Review;
 import com.tresin.cvproj.handmade_shop.model.Role;
+import com.tresin.cvproj.handmade_shop.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Set;
@@ -95,7 +101,7 @@ public interface UserApi {
 			@ApiResponse(responseCode = "404", description = "User not found or no orders found")
 	})
 	@GetMapping("/{id}/orders")
-	ResponseEntity<List<Order>> getUserOrders(@PathVariable Long id);
+	ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long id);
 
 	@Operation(
 			summary = "Get user reviews",
@@ -106,7 +112,7 @@ public interface UserApi {
 			@ApiResponse(responseCode = "404", description = "User not found or no reviews found")
 	})
 	@GetMapping("/{id}/reviews")
-	ResponseEntity<List<Review>> getUserReviews(@PathVariable Long id);
+	ResponseEntity<List<Review>> getReviewsByUserId(@PathVariable Long id);
 
 	@Operation(
 			summary = "Get user address",
@@ -117,7 +123,7 @@ public interface UserApi {
 			@ApiResponse(responseCode = "404", description = "User not found or no address found")
 	})
 	@GetMapping("/{id}/address")
-	ResponseEntity<Address> getUserAddress(@PathVariable Long id);
+	ResponseEntity<Address> getAddressByUserId(@PathVariable Long id);
 
 	@Operation(
 			summary = "Get user cart",
@@ -128,7 +134,7 @@ public interface UserApi {
 			@ApiResponse(responseCode = "404", description = "User not found or no cart found")
 	})
 	@GetMapping("/{id}/cart")
-	ResponseEntity<Cart> getUserCart(@PathVariable Long id);
+	ResponseEntity<Cart> getCartByUserId(@PathVariable Long id);
 
 	@Operation(
 			summary = "Add role to user",
@@ -161,7 +167,7 @@ public interface UserApi {
 			@ApiResponse(responseCode = "404", description = "User not found or no roles found")
 	})
 	@GetMapping("/{id}/roles")
-	ResponseEntity<Set<Role>> getUserRoles(@PathVariable Long id);
+	ResponseEntity<Set<Role>> getRolesByUserId(@PathVariable Long id);
 
 	@Operation(
 			summary = "Get user by username",

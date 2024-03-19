@@ -2,7 +2,7 @@ package com.tresin.cvproj.handmade_shop.api;
 
 import com.tresin.cvproj.handmade_shop.dto.CartDTO;
 import com.tresin.cvproj.handmade_shop.model.Cart;
-import com.tresin.cvproj.handmade_shop.model.User;
+import com.tresin.cvproj.handmade_shop.model.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -72,12 +72,24 @@ public interface CartApi {
 	ResponseEntity<Cart> getCartById(@PathVariable Long id);
 
 	@Operation(
-			summary = "Get user by cart ID",
-			description = "Retrieves the user associated with the cart by its ID")
+			summary = "Get cart by user ID",
+			description = "Retrieves the cart associated with a specific user"
+	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation"),
-			@ApiResponse(responseCode = "404", description = "Cart or user not found")
+			@ApiResponse(responseCode = "404", description = "User or cart not found")
 	})
-	@GetMapping("/{id}/user")
-	ResponseEntity<User> getUserByCartId(@PathVariable Long id);
+	@GetMapping("/user/{userId}")
+	ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId);
+
+	@Operation(
+			summary = "Get all products from the cart",
+			description = "Retrieves all products currently in the cart"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation"),
+			@ApiResponse(responseCode = "404", description = "Cart not found or no products in the cart")
+	})
+	@GetMapping("/{id}/products")
+	ResponseEntity<List<Product>> getCartProducts(@PathVariable Long id);
 }

@@ -3,7 +3,7 @@ package com.tresin.cvproj.handmade_shop.controller;
 import com.tresin.cvproj.handmade_shop.api.CartApi;
 import com.tresin.cvproj.handmade_shop.dto.CartDTO;
 import com.tresin.cvproj.handmade_shop.model.Cart;
-import com.tresin.cvproj.handmade_shop.model.User;
+import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,19 +68,13 @@ public class CartController implements CartApi {
 	}
 
 	@Override
-	public ResponseEntity<User> getUserByCartId(@PathVariable Long id) {
-		Cart cart = cartService.getCartById(id).orElse(null);
+	public ResponseEntity<Cart> getCartByUserId(Long userId) {
+		return null;
+	}
 
-		if (cart != null) {
-			User user = cart.getUser();
-			if (user != null) {
-				return ResponseEntity.ok(user);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	@Override
+	public ResponseEntity<List<Product>> getCartProducts(Long id) {
+		return null;
 	}
 
 }

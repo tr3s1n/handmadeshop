@@ -3,7 +3,6 @@ package com.tresin.cvproj.handmade_shop.controller;
 import com.tresin.cvproj.handmade_shop.api.OrderApi;
 import com.tresin.cvproj.handmade_shop.dto.OrderDTO;
 import com.tresin.cvproj.handmade_shop.model.Order;
-import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,19 +67,17 @@ public class OrderController implements OrderApi {
 	}
 
 	@Override
-	public ResponseEntity<User> getUserByOrderId(@PathVariable Long id) {
-		Order order = orderService.getOrderById(id).orElse(null);
-
-		if (order != null) {
-			User user = order.getUser();
-			if (user != null) {
-				return ResponseEntity.ok(user);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<List<Order>> getOrdersByUserId(Long userId) {
+		return null;
 	}
 
+	@Override
+	public ResponseEntity<Order> getOrderByPaymentId(Long paymentId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Integer> getOrderCountByProductId(Long productId) {
+		return null;
+	}
 }

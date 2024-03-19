@@ -70,4 +70,13 @@ public class PaymentController implements PaymentApi {
 		return paymentService.getPaymentById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@Override
+	public ResponseEntity<List<Payment>> getPaymentsByUserId(Long userId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Payment> getPaymentByOrderId(Long orderId) {
+		return null;
+	}
 }

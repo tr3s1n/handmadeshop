@@ -66,4 +66,9 @@ public class CategoryController implements CategoryApi {
 		return categoryService.getCategoryById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@Override
+	public ResponseEntity<List<Category>> getCategoriesByProductId(Long productId) {
+		return null;
+	}
+
 }

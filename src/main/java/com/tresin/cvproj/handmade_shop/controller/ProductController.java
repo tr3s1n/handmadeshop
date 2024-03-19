@@ -70,4 +70,43 @@ public class ProductController implements ProductApi {
 		return productService.getProductById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@Override
+	public ResponseEntity<List<Product>> searchProducts(String keyword, String category, Double minPrice, Double maxPrice) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<List<Product>> filterProducts(String category, String color) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<List<Product>> sortProducts(String sortBy) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<List<Product>> getProductsByCategoryId(Long categoryId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> getProductByImageId(Long imageId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<Product> getProductByReviewId(Long reviewId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<List<Product>> getProductsByCartId(Long cartId) {
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<List<Product>> getProductsByOrderId(Long orderId) {
+		return null;
+	}
 }

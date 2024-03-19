@@ -69,5 +69,15 @@ public interface CategoryApi {
 	})
 	@GetMapping("/{id}")
 	ResponseEntity<Category> getCategoryById(@PathVariable Long id);
-	
+
+	@Operation(
+			summary = "Get categories by product ID",
+			description = "Retrieves all categories associated with a specific product"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation"),
+			@ApiResponse(responseCode = "404", description = "Product not found or no categories found")
+	})
+	@GetMapping("/product/{productId}")
+	ResponseEntity<List<Category>> getCategoriesByProductId(@PathVariable Long productId);
 }

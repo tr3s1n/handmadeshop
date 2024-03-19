@@ -69,5 +69,25 @@ public interface PaymentApi {
 	})
 	@GetMapping("/{id}")
 	ResponseEntity<Payment> getPaymentById(@PathVariable Long id);
-	
+
+	@Operation(
+			summary = "Get payments by user ID",
+			description = "Retrieves payments associated with a specific user"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation")
+	})
+	@GetMapping("/user/{userId}")
+	ResponseEntity<List<Payment>> getPaymentsByUserId(@PathVariable Long userId);
+
+	@Operation(
+			summary = "Get payment by order ID",
+			description = "Retrieves a payment associated with a specific order"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation"),
+			@ApiResponse(responseCode = "404", description = "Payment not found")
+	})
+	@GetMapping("/order/{orderId}")
+	ResponseEntity<Payment> getPaymentByOrderId(@PathVariable Long orderId);
 }

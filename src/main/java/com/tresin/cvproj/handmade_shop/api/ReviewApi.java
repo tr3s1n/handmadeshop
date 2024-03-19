@@ -69,5 +69,16 @@ public interface ReviewApi {
 	})
 	@GetMapping("/{id}")
 	ResponseEntity<Review> getReviewById(@PathVariable Long id);
-	
+
+
+	@Operation(
+			summary = "Get reviews by user ID",
+			description = "Retrieves reviews associated with a specific user"
+	)
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation"),
+			@ApiResponse(responseCode = "404", description = "User not found")
+	})
+	@GetMapping("/user/{userId}")
+	ResponseEntity<List<Review>> getReviewsByUserId(@PathVariable Long userId);
 }
