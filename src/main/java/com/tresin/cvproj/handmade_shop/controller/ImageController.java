@@ -3,10 +3,10 @@ package com.tresin.cvproj.handmade_shop.controller;
 import com.tresin.cvproj.handmade_shop.api.ImageApi;
 import com.tresin.cvproj.handmade_shop.dto.ImageDTO;
 import com.tresin.cvproj.handmade_shop.model.Image;
-import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.service.ImageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,49 +26,35 @@ public class ImageController implements ImageApi {
 
 	@Override
 	public ResponseEntity<Image> createImage(@Valid @RequestBody ImageDTO imageDTO) {
-		Image newImage = new Image();
-		newImage.setProduct(imageDTO.getProduct());
-		newImage.setUrl(imageDTO.getUrl());
-		Image createdImage = imageService.createImage(newImage);
-
-		return ResponseEntity.ok(createdImage);
+		Image createdImage = imageService.createImage(imageDTO.toImage());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdImage);
 	}
 
 	@Override
 	public ResponseEntity<Image> updateImage(@PathVariable Long id, @Valid @RequestBody ImageDTO imageDTO) {
-		Image updatedImage = new Image();
-		updatedImage.setProduct(imageDTO.getProduct());
-		updatedImage.setUrl(imageDTO.getUrl());
+		Image updatedImage = imageService.createImage(imageDTO.toImage());
 		Image resultImage = imageService.updateImage(id, updatedImage);
-
-		if (resultImage != null) {
-			return ResponseEntity.ok(resultImage);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultImage);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
 		imageService.deleteImage(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<Image>> getAllImages() {
-		List<Image> images = imageService.getAllImages();
-
-		return ResponseEntity.ok(images);
+		return ResponseEntity.ok(imageService.getAllImages());
 	}
 
 	@Override
 	public ResponseEntity<Image> getImageById(@PathVariable Long id) {
-		return imageService.getImageById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(imageService.getImageById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Image>> getImagesByProductId(Long productId) {
-		return null;
+	public ResponseEntity<List<Image>> getImagesByProductId(@PathVariable Long productId) {
+		return ResponseEntity.ok(imageService.getImagesByProductId(productId));
 	}
 }

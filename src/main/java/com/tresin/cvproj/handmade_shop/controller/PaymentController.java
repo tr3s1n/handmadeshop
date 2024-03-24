@@ -6,6 +6,7 @@ import com.tresin.cvproj.handmade_shop.model.Payment;
 import com.tresin.cvproj.handmade_shop.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,58 +26,40 @@ public class PaymentController implements PaymentApi {
 
 	@Override
 	public ResponseEntity<Payment> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) {
-		Payment newPayment = new Payment();
-		newPayment.setOrder(paymentDTO.getOrder());
-		newPayment.setPaymentMethod(paymentDTO.getPaymentMethod());
-		newPayment.setAmount(paymentDTO.getAmount());
-		newPayment.setPaymentDate(paymentDTO.getPaymentDate());
-		Payment createdPayment = paymentService.createPayment(newPayment);
-
-		return ResponseEntity.ok(createdPayment);
+		Payment createdPayment = paymentService.createPayment(paymentDTO.toPayment());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdPayment);
 	}
 
 	@Override
 	public ResponseEntity<Payment> updatePayment(@PathVariable Long id, @Valid @RequestBody PaymentDTO paymentDTO) {
-		Payment updatedPayment = new Payment();
-		updatedPayment.setOrder(paymentDTO.getOrder());
-		updatedPayment.setPaymentMethod(paymentDTO.getPaymentMethod());
-		updatedPayment.setAmount(paymentDTO.getAmount());
-		updatedPayment.setPaymentDate(paymentDTO.getPaymentDate());
+		Payment updatedPayment = paymentService.createPayment(paymentDTO.toPayment());
 		Payment resultPayment = paymentService.updatePayment(id, updatedPayment);
-
-		if (resultPayment != null) {
-			return ResponseEntity.ok(resultPayment);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultPayment);
 	}
 
 	@Override
 	public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
 		paymentService.deletePayment(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<Payment>> getAllPayments() {
-		List<Payment> payments = paymentService.getAllPayments();
-
-		return ResponseEntity.ok(payments);
+		return ResponseEntity.ok(paymentService.getAllPayments());
 	}
 
 	@Override
 	public ResponseEntity<Payment> getPaymentById(@PathVariable Long id) {
-		return paymentService.getPaymentById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(paymentService.getPaymentById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Payment>> getPaymentsByUserId(Long userId) {
-		return null;
+	public ResponseEntity<List<Payment>> getPaymentsByUserId(@PathVariable Long userId) {
+		return ResponseEntity.ok(paymentService.getPaymentsByUserId(userId));
 	}
 
 	@Override
-	public ResponseEntity<Payment> getPaymentByOrderId(Long orderId) {
-		return null;
+	public ResponseEntity<Payment> getPaymentByOrderId(@PathVariable Long orderId) {
+		return ResponseEntity.ok(paymentService.getPaymentByOrderId(orderId).orElseThrow());
 	}
 }

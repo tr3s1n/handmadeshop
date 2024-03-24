@@ -6,6 +6,7 @@ import com.tresin.cvproj.handmade_shop.model.Order;
 import com.tresin.cvproj.handmade_shop.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,59 +26,45 @@ public class OrderController implements OrderApi {
 
 	@Override
 	public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
-		Order newOrder = new Order();
-		newOrder.setUser(orderDTO.getUser());
-		newOrder.setProducts(orderDTO.getProducts());
-		Order createdOrder = orderService.createOrder(newOrder);
-
-		return ResponseEntity.ok(createdOrder);
+		Order createdOrder = orderService.createOrder(orderDTO.toOrder());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
 	}
 
 	@Override
 	public ResponseEntity<Order> updateOrder(@PathVariable Long id, @Valid @RequestBody OrderDTO orderDTO) {
-		Order updatedOrder = new Order();
-		updatedOrder.setUser(orderDTO.getUser());
-		updatedOrder.setProducts(orderDTO.getProducts());
+		Order updatedOrder = orderService.createOrder(orderDTO.toOrder());
 		Order resultOrder = orderService.updateOrder(id, updatedOrder);
-
-		if (resultOrder != null) {
-			return ResponseEntity.ok(resultOrder);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultOrder);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
 		orderService.deleteOrder(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<Order>> getAllOrders() {
-		List<Order> orders = orderService.getAllOrders();
-
-		return ResponseEntity.ok(orders);
+		return ResponseEntity.ok(orderService.getAllOrders());
 	}
 
 	@Override
 	public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-		return orderService.getOrderById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(orderService.getOrderById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Order>> getOrdersByUserId(Long userId) {
-		return null;
+	public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId) {
+		return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
 	}
 
 	@Override
-	public ResponseEntity<Order> getOrderByPaymentId(Long paymentId) {
-		return null;
+	public ResponseEntity<Order> getOrderByPaymentId(@PathVariable Long paymentId) {
+		return ResponseEntity.ok(orderService.getOrderByPaymentId(paymentId));
 	}
 
 	@Override
-	public ResponseEntity<Integer> getOrderCountByProductId(Long productId) {
-		return null;
+	public ResponseEntity<Integer> getOrderCountByProductId(@PathVariable Long productId) {
+		return ResponseEntity.ok(orderService.getOrderCountByProductId(productId));
 	}
 }

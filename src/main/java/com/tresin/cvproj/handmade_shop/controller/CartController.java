@@ -7,6 +7,7 @@ import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.service.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,55 +27,40 @@ public class CartController implements CartApi {
 
 	@Override
 	public ResponseEntity<Cart> createCart(@Valid @RequestBody CartDTO cartDTO) {
-		Cart newCart = new Cart();
-		newCart.setUser(cartDTO.getUser());
-		newCart.setProducts(cartDTO.getProducts());
-		Cart createdCart = cartService.createCart(newCart);
-
-		return ResponseEntity.ok(createdCart);
+		Cart createdCart = cartService.createCart(cartDTO.toCart());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdCart);
 	}
 
 	@Override
 	public ResponseEntity<Cart> updateCart(@PathVariable Long id, @Valid @RequestBody CartDTO cartDTO) {
-		Cart updatedCart = new Cart();
-		updatedCart.setUser(cartDTO.getUser());
-		updatedCart.setProducts(cartDTO.getProducts());
+		Cart updatedCart = cartService.createCart(cartDTO.toCart());
 		Cart resultCart = cartService.updateCart(id, updatedCart);
-
-		if (resultCart != null) {
-			return ResponseEntity.ok(resultCart);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultCart);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
 		cartService.deleteCart(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<Cart>> getAllCarts() {
-		List<Cart> carts = cartService.getAllCarts();
-
-		return ResponseEntity.ok(carts);
+		return ResponseEntity.ok(cartService.getAllCarts());
 	}
 
 	@Override
 	public ResponseEntity<Cart> getCartById(@PathVariable Long id) {
-		return cartService.getCartById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(cartService.getCartById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<Cart> getCartByUserId(Long userId) {
-		return null;
+	public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
+		return ResponseEntity.ok(cartService.getCartByUserId(userId).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Product>> getCartProducts(Long id) {
-		return null;
+	public ResponseEntity<List<Product>> getCartProducts(@PathVariable Long id) {
+		return ResponseEntity.ok(cartService.getCartProducts(id));
 	}
-
 }

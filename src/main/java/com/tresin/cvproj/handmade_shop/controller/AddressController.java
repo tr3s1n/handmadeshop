@@ -45,21 +45,16 @@ public class AddressController implements AddressApi {
 
 	@Override
 	public ResponseEntity<List<Address>> getAllAddresses() {
-		List<Address> addresses = addressService.getAllAddresses();
-		return ResponseEntity.ok(addresses);
+		return ResponseEntity.ok(addressService.getAllAddresses());
 	}
 
 	@Override
 	public ResponseEntity<Address> getAddressById(@PathVariable Long id) {
-		return addressService.getAddressById(id)
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
+		return ResponseEntity.ok(addressService.getAddressById(id).orElseThrow());
 	}
 
 	@Override
 	public ResponseEntity<Address> getAddressByUserId(@PathVariable Long userId) {
-		return addressService.getAddressByUserId(userId)
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
+		return ResponseEntity.ok(addressService.getAddressByUserId(userId).orElseThrow());
 	}
 }

@@ -1,7 +1,12 @@
 package com.tresin.cvproj.handmade_shop.service;
 
 import com.tresin.cvproj.handmade_shop.exception.UserNotFoundException;
+import com.tresin.cvproj.handmade_shop.model.Address;
+import com.tresin.cvproj.handmade_shop.model.Cart;
+import com.tresin.cvproj.handmade_shop.model.Order;
 import com.tresin.cvproj.handmade_shop.model.Product;
+import com.tresin.cvproj.handmade_shop.model.Review;
+import com.tresin.cvproj.handmade_shop.model.Role;
 import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -75,15 +81,52 @@ public class UserService {
         return userOptional;
     }
 
-/*    public Optional<User> getUserByUsername(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            logger.info("User with username {} found", username);
-        } else {
-            logger.warn("User with username {} not found in method getUserById", username);
-            throw new UserNotFoundException("User with username " + username + " not found");
-        }
-        return userOptional;
-    }*/
+    // TODO: implement
+	public Void updateUserPassword(Long id, String newPassword) {
+        return null;
+	}
 
+    public List<Order> getOrdersByUserId(Long id) {
+        return null;
+    }
+
+    public List<Review> getReviewsByUserId(Long id) {
+        return null;
+    }
+
+    public Optional<Address> getAddressByUserId(Long id) {
+        return null;
+    }
+
+    public Optional<Cart> getCartByUserId(Long id) {
+        return null;
+    }
+
+    public Void addRoleToUser(Long userId, Long roleId) {
+        return null;
+    }
+
+    public Void removeRolFromUser(Long userId, Long roleId) {
+        return null;
+    }
+
+    public Set<Role> getRolesByUserId(Long id) {
+        return null;
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        return null;
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        return null;
+    }
+
+    public Void deleteUserReviews(Long id) {
+        return null;
+    }
+
+    public Void deleteUserOrders(Long id) {
+        return null;
+    }
 }

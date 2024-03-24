@@ -72,4 +72,8 @@ public class ReviewService {
         return reviewOptional;
     }
 
+    // TODO: implement
+	public List<Review> getReviewsByUserId(Long userId) {
+        return null;
+	}
 }

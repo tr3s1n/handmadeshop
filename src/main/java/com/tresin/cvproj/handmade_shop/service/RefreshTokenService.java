@@ -23,21 +23,22 @@ public class RefreshTokenService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public RefreshToken createRefreshToken(String username){
+	public RefreshToken createRefreshToken(String username) {
 		RefreshToken refreshToken = RefreshToken.builder()
 				.user(userRepository.findByUsername(username))
 				.token(UUID.randomUUID().toString())
-				.expiryDate(Instant.now().plusMillis(600000)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
+				// TODO: Add expiration time to application.properties file
+				.expiryDate(Instant.now().plusMillis(600000))
 				.build();
 		return refreshTokenRepository.save(refreshToken);
 	}
 
-	public Optional<RefreshToken> findByToken(String token){
+	public Optional<RefreshToken> findByToken(String token) {
 		return refreshTokenRepository.findByToken(token);
 	}
 
-	public RefreshToken verifyExpiration(RefreshToken token){
-		if(token.getExpiryDate().compareTo(Instant.now())<0){
+	public RefreshToken verifyExpiration(RefreshToken token) {
+		if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
 			refreshTokenRepository.delete(token);
 			throw new RuntimeException(token.getToken() + " Refresh token is expired. Please login again!");
 		}

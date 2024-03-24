@@ -60,8 +60,8 @@ public class AddressService {
      * @throws ConstraintViolationException  If the updatedAddress violates constraints specified by annotations in the Address model class.
      */
     public Address updateAddress(Long id, Address updatedAddress) {
-        if (id == null || updatedAddress == null) {
-            throw new IllegalArgumentException("ID and Address cannot be null");
+        if (id == null || id <= 0 || updatedAddress == null) {
+            throw new IllegalArgumentException("Invalid address or ID");
         }
 
         return addressRepository.findById(id)
@@ -85,8 +85,8 @@ public class AddressService {
      * @throws AddressNotFoundException    If the address with the given ID is not found.
      */
     public void deleteAddress(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null");
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid address ID");
         }
 
         Optional<Address> addressOptional = addressRepository.findById(id);
@@ -120,8 +120,8 @@ public class AddressService {
      * @throws AddressNotFoundException    If the address with the given ID is not found.
      */
     public Optional<Address> getAddressById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null");
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid address ID");
         }
 
         Optional<Address> addressOptional = addressRepository.findById(id);

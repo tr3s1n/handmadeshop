@@ -21,6 +21,12 @@ public class AddressDTO {
     @NotBlank(message = "ZIP code is required")
     private String zipCode;
 
+    /**
+     * Converts the AddressDTO object to an Address object.
+     *
+     * @return The Address object converted from the AddressDTO.
+     * @throws IllegalArgumentException If the user, street, city, or ZIP code is null.
+     */
     public Address toAddress() {
         if (this.user == null || this.street == null || this.city == null || this.zipCode == null) {
             throw new IllegalArgumentException("Invalid AddressDTO: User, Street, City, and ZIP code are required");

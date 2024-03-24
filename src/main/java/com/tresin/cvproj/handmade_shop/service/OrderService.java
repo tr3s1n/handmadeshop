@@ -71,4 +71,16 @@ public class OrderService {
         return orderOptional;
     }
 
+    // TODO: implement methods
+	public List<Order> getOrdersByUserId(Long userId) {
+        return null;
+	}
+
+    public Order getOrderByPaymentId(Long paymentId) {
+        return null;
+    }
+
+    public Integer getOrderCountByProductId(Long productId) {
+        return null;
+    }
 }

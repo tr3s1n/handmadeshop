@@ -30,11 +30,7 @@ public class RoleController implements RoleApi {
 	@Override
 	public ResponseEntity<Role> updateRole(@PathVariable Long id, @RequestBody Role role) {
 		Role updatedRole = roleService.updateRole(id, role);
-		if (updatedRole != null) {
-			return ResponseEntity.ok(updatedRole);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(updatedRole);
 	}
 
 	@Override
@@ -45,12 +41,11 @@ public class RoleController implements RoleApi {
 
 	@Override
 	public ResponseEntity<List<Role>> getAllRoles() {
-		List<Role> roles = roleService.getAllRoles();
-		return ResponseEntity.ok(roles);
+		return ResponseEntity.ok(roleService.getAllRoles());
 	}
 
 	@Override
 	public ResponseEntity<Role> getRoleById(@PathVariable Long id) {
-		return roleService.getRoleById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(roleService.getRoleById(id).orElseThrow());
 	}
 }

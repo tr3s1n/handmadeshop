@@ -71,4 +71,8 @@ public class CategoryService {
         return categoryOptional;
     }
 
+    public List<Category> getCategoriesByProductId(Long productId) {
+        //TODO implement
+        return null;
+    }
 }

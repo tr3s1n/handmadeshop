@@ -6,6 +6,7 @@ import com.tresin.cvproj.handmade_shop.model.Category;
 import com.tresin.cvproj.handmade_shop.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,50 +26,36 @@ public class CategoryController implements CategoryApi {
 
 	@Override
 	public ResponseEntity<Category> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
-		Category newCategory = new Category();
-		newCategory.setName(categoryDTO.getName());
-		newCategory.setProducts(categoryDTO.getProducts());
-		Category createdCategory = categoryService.createCategory(newCategory);
-
-		return ResponseEntity.ok(createdCategory);
+		Category createdCategory = categoryService.createCategory(categoryDTO.toCategory());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
 	}
 
 	@Override
 	public ResponseEntity<Category> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryDTO categoryDTO) {
-		Category updatedCategory = new Category();
-		updatedCategory.setName(categoryDTO.getName());
-		updatedCategory.setProducts(categoryDTO.getProducts());
+		Category updatedCategory = categoryService.createCategory(categoryDTO.toCategory());
 		Category resultCategory = categoryService.updateCategory(id, updatedCategory);
-
-		if (resultCategory != null) {
-			return ResponseEntity.ok(resultCategory);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultCategory);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
 		categoryService.deleteCategory(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<Category>> getAllCategories() {
-		List<Category> categories = categoryService.getAllCategories();
-
-		return ResponseEntity.ok(categories);
+		return ResponseEntity.ok(categoryService.getAllCategories());
 	}
 
 	@Override
 	public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-		return categoryService.getCategoryById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(categoryService.getCategoryById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Category>> getCategoriesByProductId(Long productId) {
-		return null;
+	public ResponseEntity<List<Category>> getCategoriesByProductId(@PathVariable Long productId) {
+		return ResponseEntity.ok(categoryService.getCategoriesByProductId(productId));
 	}
 
 }

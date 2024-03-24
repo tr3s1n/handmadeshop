@@ -74,4 +74,36 @@ public class ProductService {
         return productOptional;
     }
 
+    // TODO: implement
+	public List<Product> sortProducts(String sortBy) {
+        return null;
+	}
+
+    public List<Product> getProductsByCategoryId(Long categoryId) {
+        return null;
+    }
+
+    public Optional<Product> getProductByImageId(Long imageId) {
+        return null;
+    }
+
+    public Optional<Product> getProductByReviewId(Long reviewId) {
+        return null;
+    }
+
+    public List<Product> getProductsByCartId(Long cartId) {
+        return null;
+    }
+
+    public List<Product> getProductsByOrderId(Long orderId) {
+        return null;
+    }
+
+    public List<Product> searchProducts(String keyword, String category, Double minPrice, Double maxPrice) {
+        return null;
+    }
+
+    public List<Product> filterProducts(String category, String color) {
+        return null;
+    }
 }

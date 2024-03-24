@@ -1,11 +1,13 @@
 package com.tresin.cvproj.handmade_shop.dto;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Setter
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleDTO {
 
     private String name;

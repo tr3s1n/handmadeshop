@@ -6,6 +6,7 @@ import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,88 +26,70 @@ public class ProductController implements ProductApi {
 
 	@Override
 	public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
-		Product newProduct = new Product();
-		newProduct.setName(productDTO.getName());
-		newProduct.setPrice(productDTO.getPrice());
-		newProduct.setImages(productDTO.getImages());
-		newProduct.setCategories(productDTO.getCategories());
-		Product createdProduct = productService.createProduct(newProduct);
-
-		return ResponseEntity.ok(createdProduct);
+		Product createdProduct = productService.createProduct(productDTO.toProduct());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
 	}
 
 	@Override
 	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
-		Product updatedProduct = new Product();
-		updatedProduct.setName(productDTO.getName());
-		updatedProduct.setPrice(productDTO.getPrice());
-		updatedProduct.setCategories(productDTO.getCategories());
-		updatedProduct.setImages(productDTO.getImages());
+		Product updatedProduct = productService.createProduct(productDTO.toProduct());
 		Product resultProduct = productService.updateProduct(id, updatedProduct);
-
-		if (resultProduct != null) {
-			return ResponseEntity.ok(resultProduct);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultProduct);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<Product>> getAllProducts() {
-		List<Product> products = productService.getAllProducts();
-
-		return ResponseEntity.ok(products);
+		return ResponseEntity.ok(productService.getAllProducts());
 	}
 
 	@Override
 	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-		return productService.getProductById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(productService.getProductById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Product>> searchProducts(String keyword, String category, Double minPrice, Double maxPrice) {
-		return null;
+	public ResponseEntity<List<Product>> searchProducts(@PathVariable String keyword, @PathVariable String category, @PathVariable Double minPrice, @PathVariable Double maxPrice) {
+		return ResponseEntity.ok(productService.searchProducts(keyword, category, minPrice, maxPrice));
 	}
 
 	@Override
-	public ResponseEntity<List<Product>> filterProducts(String category, String color) {
-		return null;
+	public ResponseEntity<List<Product>> filterProducts(@PathVariable String category, @PathVariable String color) {
+		return ResponseEntity.ok(productService.filterProducts(category, color));
 	}
 
 	@Override
-	public ResponseEntity<List<Product>> sortProducts(String sortBy) {
-		return null;
+	public ResponseEntity<List<Product>> sortProducts(@PathVariable String sortBy) {
+		return ResponseEntity.ok(productService.sortProducts(sortBy));
 	}
 
 	@Override
-	public ResponseEntity<List<Product>> getProductsByCategoryId(Long categoryId) {
-		return null;
+	public ResponseEntity<List<Product>> getProductsByCategoryId(@PathVariable Long categoryId) {
+		return ResponseEntity.ok(productService.getProductsByCategoryId(categoryId));
 	}
 
 	@Override
-	public ResponseEntity<Product> getProductByImageId(Long imageId) {
-		return null;
+	public ResponseEntity<Product> getProductByImageId(@PathVariable Long imageId) {
+		return ResponseEntity.ok(productService.getProductByImageId(imageId).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<Product> getProductByReviewId(Long reviewId) {
-		return null;
+	public ResponseEntity<Product> getProductByReviewId(@PathVariable Long reviewId) {
+		return ResponseEntity.ok(productService.getProductByReviewId(reviewId).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Product>> getProductsByCartId(Long cartId) {
-		return null;
+	public ResponseEntity<List<Product>> getProductsByCartId(@PathVariable Long cartId) {
+		return ResponseEntity.ok(productService.getProductsByCartId(cartId));
 	}
 
 	@Override
-	public ResponseEntity<List<Product>> getProductsByOrderId(Long orderId) {
-		return null;
+	public ResponseEntity<List<Product>> getProductsByOrderId(@PathVariable Long orderId) {
+		return ResponseEntity.ok(productService.getProductsByOrderId(orderId));
 	}
 }

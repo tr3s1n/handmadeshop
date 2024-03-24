@@ -21,6 +21,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
+    @NotBlank(message = "User is required")
     private User user;
     @NotBlank(message = "Street is required")
     private String street;
@@ -29,14 +30,17 @@ public class Address {
     @NotBlank(message = "ZIP code is required")
     private String zipCode;
 
-    // Constructors
     public Address(String street, String city, String zipCode) {
         this.street = street;
         this.city = city;
         this.zipCode = zipCode;
     }
-    
 
+    /**
+     * Updates the address entity based on the provided DTO.
+     *
+     * @param addressDTO The DTO containing the updated address information.
+     */
     public void updateFromDTO(AddressDTO addressDTO) {
         this.setUser(addressDTO.getUser());
         this.setStreet(addressDTO.getStreet());
@@ -44,6 +48,11 @@ public class Address {
         this.setZipCode(addressDTO.getZipCode());
     }
 
+    /**
+     * Converts the address entity to a DTO.
+     *
+     * @return The DTO representation of the address entity.
+     */
     public AddressDTO toDTO() {
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setUser(this.user);

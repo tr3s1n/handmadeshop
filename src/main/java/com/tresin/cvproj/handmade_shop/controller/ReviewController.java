@@ -6,6 +6,7 @@ import com.tresin.cvproj.handmade_shop.model.Review;
 import com.tresin.cvproj.handmade_shop.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,54 +26,36 @@ public class ReviewController implements ReviewApi {
 
 	@Override
 	public ResponseEntity<Review> createReview(@Valid @RequestBody ReviewDTO reviewDTO) {
-		Review newReview = new Review();
-		newReview.setUser(reviewDTO.getUser());
-		newReview.setProduct(reviewDTO.getProduct());
-		newReview.setRating(reviewDTO.getRating());
-		newReview.setComment(reviewDTO.getComment());
-		Review createdReview = reviewService.createReview(newReview);
-
-		return ResponseEntity.ok(createdReview);
+		Review createdReview = reviewService.createReview(reviewDTO.toReview());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdReview);
 	}
 
 	@Override
 	public ResponseEntity<Review> updateReview(@PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
-		Review updatedReview = new Review();
-		updatedReview.setUser(reviewDTO.getUser());
-		updatedReview.setProduct(reviewDTO.getProduct());
-		updatedReview.setRating(reviewDTO.getRating());
-		updatedReview.setComment(reviewDTO.getComment());
+		Review updatedReview = reviewService.createReview(reviewDTO.toReview());
 		Review resultReview = reviewService.updateReview(id, updatedReview);
-
-		if (resultReview != null) {
-			return ResponseEntity.ok(resultReview);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultReview);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
 		reviewService.deleteReview(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<Review>> getAllReviews() {
-		List<Review> reviews = reviewService.getAllReviews();
-
-		return ResponseEntity.ok(reviews);
+		return ResponseEntity.ok(reviewService.getAllReviews());
 	}
 
 	@Override
 	public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
-		return reviewService.getReviewById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(reviewService.getReviewById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<List<Review>> getReviewsByUserId(Long userId) {
-		return null;
+	public ResponseEntity<List<Review>> getReviewsByUserId(@PathVariable Long userId) {
+		return ResponseEntity.ok(reviewService.getReviewsByUserId(userId));
 	}
 
 }

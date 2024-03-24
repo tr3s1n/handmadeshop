@@ -11,9 +11,11 @@ import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,104 +33,90 @@ public class UserController implements UserApi {
 
 	@Override
 	public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) {
-		User newUser = new User();
-		newUser.setUsername(userDTO.getUsername());
-		newUser.setEmail(userDTO.getEmail());
-		User createdUser = userService.createUser(newUser);
-
-		return ResponseEntity.ok(createdUser);
+		User createdUser = userService.createUser(userDTO.toUser());
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 	}
 
 	@Override
 	public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
-		User updatedUser = new User();
-		updatedUser.setUsername(userDTO.getUsername());
-		updatedUser.setEmail(userDTO.getEmail());
+		User updatedUser = userService.createUser(userDTO.toUser());
 		User resultUser = userService.updateUser(id, updatedUser);
-
-		if (resultUser != null) {
-			return ResponseEntity.ok(resultUser);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(resultUser);
 	}
 
 	@Override
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
-
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<List<User>> getAllUsers() {
-		List<User> users = userService.getAllUsers();
-
-		return ResponseEntity.ok(users);
+		return ResponseEntity.ok(userService.getAllUsers());
 	}
 
 	@Override
 	public ResponseEntity<User> getUserById(@PathVariable Long id) {
-		return userService.getUserById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return ResponseEntity.ok(userService.getUserById(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<Void> updateUserPassword(Long id, String newPassword) {
-		return null;
+	public ResponseEntity<Void> updateUserPassword(@PathVariable Long id, @PathVariable String newPassword) {
+		return ResponseEntity.ok(userService.updateUserPassword(id, newPassword));
 	}
 
 	@Override
-	public ResponseEntity<List<Order>> getOrdersByUserId(Long id) {
-		return null;
+	public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long id) {
+		return ResponseEntity.ok(userService.getOrdersByUserId(id));
 	}
 
 	@Override
-	public ResponseEntity<List<Review>> getReviewsByUserId(Long id) {
-		return null;
+	public ResponseEntity<List<Review>> getReviewsByUserId(@PathVariable Long id) {
+		return ResponseEntity.ok(userService.getReviewsByUserId(id));
 	}
 
 	@Override
-	public ResponseEntity<Address> getAddressByUserId(Long id) {
-		return null;
+	public ResponseEntity<Address> getAddressByUserId(@PathVariable Long id) {
+		return ResponseEntity.ok(userService.getAddressByUserId(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<Cart> getCartByUserId(Long id) {
-		return null;
+	public ResponseEntity<Cart> getCartByUserId(@PathVariable Long id) {
+		return ResponseEntity.ok(userService.getCartByUserId(id).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<Void> addRoleToUser(Long userId, Long roleId) {
-		return null;
+	public ResponseEntity<Void> addRoleToUser(@PathVariable Long userId, @PathVariable Long roleId) {
+		return ResponseEntity.ok(userService.addRoleToUser(userId, roleId));
 	}
 
 	@Override
-	public ResponseEntity<Void> removeRoleFromUser(Long userId, Long roleId) {
-		return null;
+	public ResponseEntity<Void> removeRoleFromUser(@PathVariable Long userId, @PathVariable Long roleId) {
+		return ResponseEntity.ok(userService.removeRolFromUser(userId, roleId));
 	}
 
 	@Override
-	public ResponseEntity<Set<Role>> getRolesByUserId(Long id) {
-		return null;
+	public ResponseEntity<Set<Role>> getRolesByUserId(@PathVariable Long id) {
+		return ResponseEntity.ok(userService.getRolesByUserId(id));
 	}
 
 	@Override
-	public ResponseEntity<User> getUserByUsername(String username) {
-		return null;
+	public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+		return ResponseEntity.ok(userService.getUserByUsername(username).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<User> getUserByEmail(String email) {
-		return null;
+	public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+		return ResponseEntity.ok(userService.getUserByEmail(email).orElseThrow());
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteUserReviews(Long id) {
-		return null;
+	public ResponseEntity<Void> deleteUserReviews(@PathVariable Long id) {
+		return ResponseEntity.ok(userService.deleteUserReviews(id));
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteUserOrders(Long id) {
-		return null;
+	public ResponseEntity<Void> deleteUserOrders(@PathVariable Long id) {
+		return ResponseEntity.ok(userService.deleteUserOrders(id));
 	}
 }

@@ -72,4 +72,12 @@ public class PaymentService {
         return paymentOptional;
     }
 
+    // TODO: implement methods
+	public List<Payment> getPaymentsByUserId(Long userId) {
+        return null;
+	}
+
+    public Optional<Payment> getPaymentByOrderId(Long orderId) {
+        return null;
+    }
 }

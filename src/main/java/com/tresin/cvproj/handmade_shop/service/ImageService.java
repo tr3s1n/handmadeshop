@@ -71,4 +71,8 @@ public class ImageService {
         return imageOptional;
     }
 
+	public List<Image> getImagesByProductId(Long productId) {
+        // TODO: implement
+        return null;
+	}
 }
