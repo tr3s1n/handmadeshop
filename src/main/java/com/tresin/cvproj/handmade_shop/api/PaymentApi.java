@@ -118,25 +118,6 @@ public interface PaymentApi {
 	ResponseEntity<Payment> getPaymentById(@PathVariable Long id);
 
 	/**
-	 * Retrieves payments associated with a specific user.
-	 *
-	 * @param userId The ID of the user whose payments are to be retrieved.
-	 * @return ResponseEntity<List<Payment>> The payments associated with the given user ID.
-	 */
-	@Operation(
-			summary = "Get payments by user ID",
-			description = "Retrieves payments associated with a specific user."
-	)
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successful operation"),
-			@ApiResponse(responseCode = "400", description = "Bad request, invalid user ID provided"),
-			@ApiResponse(responseCode = "404", description = "User or Payment not found"),
-			@ApiResponse(responseCode = "500", description = "Internal server error")
-	})
-	@GetMapping("/user/{userId}")
-	ResponseEntity<List<Payment>> getPaymentsByUserId(@PathVariable Long userId);
-
-	/**
 	 * Retrieves a payment associated with a specific order.
 	 *
 	 * @param orderId The ID of the order whose payment is to be retrieved.

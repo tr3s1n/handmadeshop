@@ -37,7 +37,7 @@ public class AddressService {
      * @param newAddress The address to be created.
      * @return The created address.
      * @throws IllegalArgumentException      If the newAddress is null.
-     * @throws ConstraintViolationException  If the updatedAddress violates constraints specified by annotations in the Address model class.
+     * @throws ConstraintViolationException  If the newAddress violates constraints specified by annotations in the Address model class.
      */
     public Address createAddress(Address newAddress) {
         if (newAddress == null) {

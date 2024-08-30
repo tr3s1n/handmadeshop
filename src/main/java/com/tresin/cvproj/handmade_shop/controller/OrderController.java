@@ -60,7 +60,7 @@ public class OrderController implements OrderApi {
 
 	@Override
 	public ResponseEntity<Order> getOrderByPaymentId(@PathVariable Long paymentId) {
-		return ResponseEntity.ok(orderService.getOrderByPaymentId(paymentId));
+		return ResponseEntity.ok(orderService.getOrderByPaymentId(paymentId).orElseThrow());
 	}
 
 	@Override

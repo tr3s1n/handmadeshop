@@ -54,11 +54,6 @@ public class PaymentController implements PaymentApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Payment>> getPaymentsByUserId(@PathVariable Long userId) {
-		return ResponseEntity.ok(paymentService.getPaymentsByUserId(userId));
-	}
-
-	@Override
 	public ResponseEntity<Payment> getPaymentByOrderId(@PathVariable Long orderId) {
 		return ResponseEntity.ok(paymentService.getPaymentByOrderId(orderId).orElseThrow());
 	}

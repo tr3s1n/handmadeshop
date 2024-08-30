@@ -90,4 +90,10 @@ public class User {
 		userDTO.setOrders(this.orders);
 		return userDTO;
 	}
+
+	public boolean isEmpty() {
+		return username == null || username.isEmpty() ||
+				email == null || email.isEmpty() ||
+				password == null || password.isEmpty();
+	}
 }

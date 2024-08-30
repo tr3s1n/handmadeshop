@@ -62,7 +62,8 @@ public class UserController implements UserApi {
 
 	@Override
 	public ResponseEntity<Void> updateUserPassword(@PathVariable Long id, @PathVariable String newPassword) {
-		return ResponseEntity.ok(userService.updateUserPassword(id, newPassword));
+		userService.updateUserPassword(id, newPassword);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
@@ -87,12 +88,14 @@ public class UserController implements UserApi {
 
 	@Override
 	public ResponseEntity<Void> addRoleToUser(@PathVariable Long userId, @PathVariable Long roleId) {
-		return ResponseEntity.ok(userService.addRoleToUser(userId, roleId));
+		userService.addRoleToUser(userId, roleId);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	public ResponseEntity<Void> removeRoleFromUser(@PathVariable Long userId, @PathVariable Long roleId) {
-		return ResponseEntity.ok(userService.removeRolFromUser(userId, roleId));
+		userService.removeRoleFromUser(userId, roleId);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
@@ -111,12 +114,14 @@ public class UserController implements UserApi {
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteUserReviews(@PathVariable Long id) {
-		return ResponseEntity.ok(userService.deleteUserReviews(id));
+	public ResponseEntity<Void> deleteUserReviews(@PathVariable Long userId) {
+		userService.deleteUserReviews(userId);
+		return ResponseEntity.noContent().build();
 	}
 
 	@Override
-	public ResponseEntity<Void> deleteUserOrders(@PathVariable Long id) {
-		return ResponseEntity.ok(userService.deleteUserOrders(id));
+	public ResponseEntity<Void> deleteUserOrders(@PathVariable Long userId) {
+		userService.deleteUserOrders(userId);
+		return ResponseEntity.noContent().build();
 	}
 }

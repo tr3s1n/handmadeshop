@@ -21,12 +21,27 @@ public class ReviewService {
     public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
+
+    /**
+     * Creates a new review.
+     *
+     * @param newReview The review to be created.
+     * @return The created review.
+     */
     public Review createReview(Review newReview) {
         Review createdReview = reviewRepository.save(newReview);
         logger.info("Review with ID {} created successfully", createdReview.getId());
         return createdReview;
     }
 
+    /**
+     * Updates an existing review.
+     *
+     * @param reviewId      The ID of the review to update.
+     * @param updatedReview The updated review information.
+     * @return The updated review.
+     * @throws ReviewNotFoundException If the review with the given ID is not found.
+     */
     public Review updateReview(Long reviewId, Review updatedReview) {
         Optional<Review> existingReviewOptional = reviewRepository.findById(reviewId);
         if (existingReviewOptional.isPresent()) {
@@ -46,6 +61,12 @@ public class ReviewService {
         }
     }
 
+    /**
+     * Deletes an existing review.
+     *
+     * @param reviewId The ID of the review to delete.
+     * @throws ReviewNotFoundException If the review with the given ID is not found.
+     */
     public void deleteReview(Long reviewId) {
         Optional<Review> existingReviewOptional = reviewRepository.findById(reviewId);
         if (existingReviewOptional.isPresent()) {
@@ -57,10 +78,22 @@ public class ReviewService {
         }
     }
 
+    /**
+     * Retrieves all reviews.
+     *
+     * @return A list containing all reviews.
+     */
     public List<Review> getAllReviews() {
         return reviewRepository.findAll();
     }
 
+    /**
+     * Retrieves the review with the specified ID.
+     *
+     * @param reviewId The ID of the review to retrieve.
+     * @return An Optional containing the review with the given ID, if present.
+     * @throws ReviewNotFoundException If the review with the given ID is not found.
+     */
     public Optional<Review> getReviewById(Long reviewId) {
         Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
         if (reviewOptional.isPresent()) {
@@ -72,8 +105,14 @@ public class ReviewService {
         return reviewOptional;
     }
 
-    // TODO: implement
-	public List<Review> getReviewsByUserId(Long userId) {
-        return null;
-	}
+    /**
+     * Retrieves reviews for a specific user identified by their ID.
+     *
+     * @param userId The ID of the user.
+     * @return A list of reviews associated with the specified user.
+     */
+    public List<Review> getReviewsByUserId(Long userId) {
+        return reviewRepository.findByUserId(userId);
+    }
+
 }

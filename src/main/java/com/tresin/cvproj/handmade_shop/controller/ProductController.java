@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 public class ProductController implements ProductApi {
-
 	private final ProductService productService;
 
 	@Autowired

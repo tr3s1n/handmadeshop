@@ -6,6 +6,7 @@ import com.tresin.cvproj.handmade_shop.model.Cart;
 import com.tresin.cvproj.handmade_shop.model.Product;
 import com.tresin.cvproj.handmade_shop.model.User;
 import com.tresin.cvproj.handmade_shop.repository.CartRepository;
+import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,7 @@ import java.util.Optional;
  */
 @Service
 public class CartService {
-
-
+    
     private static final Logger logger = LoggerFactory.getLogger(CartService.class);
     private final CartRepository cartRepository;
     private final UserService userService;
@@ -39,7 +39,8 @@ public class CartService {
      *
      * @param newCart The cart to be created.
      * @return The created cart.
-     * @throws IllegalArgumentException If the newCart is null.
+     * @throws IllegalArgumentException      If the newCart is null.
+     * @throws ConstraintViolationException  If the newCart violates constraints specified by annotations in the Cart model class.
      */
     public Cart createCart(Cart newCart) {
         if (newCart == null) {
@@ -59,6 +60,7 @@ public class CartService {
      * @return The updated cart.
      * @throws IllegalArgumentException     If id or updatedCart is null or if id is invalid.
      * @throws CartNotFoundException        If the cart with the given ID is not found.
+     * @throws ConstraintViolationException If the updatedCart violates constraints specified by annotations in the Cart model class.
      */
     public Cart updateCart(Long id, Cart updatedCart) {
         if (id == null || id <= 0 || updatedCart == null) {
@@ -170,17 +172,19 @@ public class CartService {
      *
      * @param id The ID of the cart.
      * @return A list of products associated with the cart, or an empty list if no products are found.
-     * @throws CartNotFoundException If the cart with the given ID is not found.
+     * @throws IllegalArgumentException If the cart ID is null.
+     * @throws CartNotFoundException    If the cart with the given ID is not found.
      */
     public List<Product> getCartProducts(Long id) {
-        Optional<Cart> cartOptional = cartRepository.findById(id);
-        if (cartOptional.isPresent()) {
-            Cart cart = cartOptional.get();
-            List<Product> products = cart.getProducts();
-			return Objects.requireNonNullElse(products, Collections.emptyList());
-        } else {
-            logger.error("Cart with ID {} not found in method getCartProducts", id);
-            throw new CartNotFoundException("Cart with ID " + id + " not found");
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid cart ID");
         }
+
+        return cartRepository.findById(id)
+                .map(Cart::getProducts)
+                .orElseThrow(() -> {
+                    logger.error("Cart with ID {} not found in method getCartProducts", id);
+                    return new CartNotFoundException("Cart with ID " + id + " not found");
+                });
     }
 }
